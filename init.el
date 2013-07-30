@@ -75,5 +75,6 @@
 (require 'setup-org)
 (require 'setup-latex)
 (require 'setup-prog)
+(require 'setup-python)
 
 
