@@ -24,4 +24,38 @@
 (setq-default save-place t)
 (setq save-place-file (expand-file-name ".places" user-emacs-directory))
 
+;; Make things pretty
 (require 'appearance)
+
+;; install packages when required.
+(require 'setup-package)
+;; Install extensions if they're missing
+(defun init--install-packages ()
+  (packages-install
+   (cons 'magit melpa)
+   (cons 'move-text melpa)
+   (cons 'visual-regexp-steroids melpa)
+   (cons 'smartparens melpa)
+   (cons 'auto-complete melpa)
+   (cons 'mmm-mode melpa)
+   (cons 'color-theme melpa)
+   (cons 'fic-mode melpa)
+   (cons 'rainbow-delimiters melpa)
+   (cons 'jedi melpa)
+   (cons 'ido melpa)
+   (cons 'flx-ido melpa)
+   (cons 'ido-ubiquitous melpa)
+   (cons 'highlight-escape-sequences melpa)
+   (cons 'smartparens melpa)
+   (cons 'smex melpa)))
+
+(when (not package-archive-contents) (package-refresh-contents))
+
+(condition-case nil
+    (init--install-packages)
+  (error
+   (package-refresh-contents)
+   (init--install-packages)))
+
+
+(require 'setup-ido)

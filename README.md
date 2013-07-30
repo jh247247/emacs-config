@@ -2,6 +2,8 @@ emacs-config
 ============
 
 My original non-forked emacs config.
+Based heavily on: https://github.com/magnars/.emacs.d
+which I used previously.
 
 Aims
 ====
@@ -17,4 +19,5 @@ Languages
 - Java
 - Prolog
 - Lisp
+
 
