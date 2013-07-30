@@ -1,3 +1,5 @@
+;; Load everything in relation to the minibuffer.
+
 ;; Interactively Do Things
 
 (require 'ido)
@@ -55,4 +57,30 @@
 (ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
 (ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)
 
-(provide 'setup-ido)
+;; load smex, for better M-x 
+(require 'smex)
+(smex-initialize)
+(global-set-key [(meta x)] (lambda ()
+                             (interactive)
+                             (or (boundp 'smex-cache)
+                                 (smex-initialize))
+                             (global-set-key [(meta x)] 'smex)
+                             (smex)))
+
+(global-set-key [(shift meta x)] (lambda ()
+                                   (interactive)
+                                   (or (boundp 'smex-cache)
+                                       (smex-initialize))
+                                   (global-set-key [(shift meta x)] 'smex-major-mode-commands)
+                                   (smex-major-mode-commands)))
+(defadvice smex (around space-inserts-hyphen activate compile)
+  (let ((ido-cannot-complete-command 
+	 `(lambda ()
+	    (interactive)
+	    (if (string= " " (this-command-keys))
+		(insert ?-)
+	      (funcall ,ido-cannot-complete-command)))))
+    ad-do-it))
+
+(provide 'setup-minibuffer)
+

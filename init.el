@@ -58,4 +58,4 @@
    (init--install-packages)))
 
 
-(require 'setup-ido)
+(require 'setup-minibuffer)
