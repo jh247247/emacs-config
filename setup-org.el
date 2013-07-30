@@ -24,7 +24,7 @@
          ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 (add-hook 'org-mode-hook 'flyspell-mode)
-(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+;;(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
 
 (org-babel-do-load-languages
  'org-babel-load-languages

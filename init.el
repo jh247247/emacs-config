@@ -1,6 +1,7 @@
 ;; This is a config that will aim to be speedy. As in near instant start on an SSD.
 ;; Might not cut it on a conventional HDD but I guess nobody will use it anyway so there.
 
+(byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
 
 ;; Disable almost all GUI elements
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
@@ -47,6 +48,7 @@
    (cons 'ido-ubiquitous melpa)
    (cons 'highlight-escape-sequences melpa)
    (cons 'smartparens melpa)
+   (cons 'yasnippet melpa)
    (cons 'smex melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
@@ -56,6 +58,11 @@
   (error
    (package-refresh-contents)
    (init--install-packages)))
+
+(add-to-list 'load-path
+                "~/path-to-yasnippet")
+   (require 'yasnippet)
+   (yas-global-mode 1)
 
 ;; setup minibuffer stuff.
 (require 'setup-ido)
