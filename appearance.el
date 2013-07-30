@@ -7,10 +7,7 @@
   (blink-cursor-mode -1))
 
 
-;; load one of the only dark high contrast themes with a sane color scheme.
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-billw)
-
+(set-background-color "black")
+(set-foreground-color "white")
 
 (provide 'appearance)

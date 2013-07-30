@@ -32,6 +32,7 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
+   (cons 'color-theme melpa)
    (cons 'move-text melpa)
    (cons 'visual-regexp-steroids melpa)
    (cons 'smartparens melpa)
@@ -56,5 +57,13 @@
    (package-refresh-contents)
    (init--install-packages)))
 
+;; setup minibuffer stuff.
+(require 'setup-ido)
+(require 'setup-smex)
 
-(require 'setup-minibuffer)
+;; setup specific modes.
+(require 'setup-org)
+(require 'setup-latex)
+(require 'setup-prog)
+
+

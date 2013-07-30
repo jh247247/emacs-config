@@ -18,4 +18,6 @@
 ;;(load "preview-latex.el" nil t t)
 ;;(setq-default TeX-master nil) ; Query for master file.
 
+(require 'smartparens-latex)
+
 (provide 'setup-latex)
