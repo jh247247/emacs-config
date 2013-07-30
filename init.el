@@ -32,7 +32,6 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
-   (cons 'magit melpa)
    (cons 'move-text melpa)
    (cons 'visual-regexp-steroids melpa)
    (cons 'smartparens melpa)
