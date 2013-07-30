@@ -64,6 +64,9 @@
    (require 'yasnippet)
    (yas-global-mode 1)
 
+;; setup universal emacs stuff.
+(require 'setup-universal)
+
 ;; setup minibuffer stuff.
 (require 'setup-ido)
 (require 'setup-smex)
