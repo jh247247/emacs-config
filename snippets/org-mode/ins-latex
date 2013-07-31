@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ins-latex
+# key: ilat
+# --
+#+begin_src latex :results code :export latex
+$1
+#+end_src

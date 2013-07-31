@@ -30,6 +30,11 @@
  'org-babel-load-languages
  '((latex . t)))
 
+
+(setq org-confirm-babel-evaluate nil)
 (require 'ob-latex)
+
+(require 'smartparens)
+(add-hook 'org-mode-hook 'smartparens-mode)
 
 (provide 'setup-org)

@@ -1,0 +1,3 @@
+[submodule "site-lisp/cdlatex"]
+	path = site-lisp/cdlatex
+	url = https://github.com/emacsmirror/cdlatex.git
