@@ -37,4 +37,7 @@
 ;; fontify code in code blocks
 (setq org-src-fontify-natively t)
 
+(require 'cdlatex)
+(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+
 (provide 'setup-org)
