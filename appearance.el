@@ -10,4 +10,8 @@
 (set-background-color "black")
 (set-foreground-color "white")
 
+(require 'color-theme)
+(color-theme-initialize)
+(color-theme-billw)
+
 (provide 'appearance)
