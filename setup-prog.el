@@ -25,4 +25,9 @@
 ;; Use only own snippets, do not use bundled ones
 (setq yas/snippet-dirs '("~/.emacs.d/snippets"))
 
+;; highlight-escape-sequences
+(require 'highlight-escape-sequences)
+(add-hook 'prog-mode-hook 'hes-mode)
+
+
 (provide 'setup-prog)
