@@ -88,4 +88,9 @@ Symbols matching the text at point are put first in the completion list."
 ;; add some nice tiling stuff.
 (require 'emacsd-tile)
 
+;; smart-mode-line stuff.
+(require 'smart-mode-line)
+(if after-init-time (sml/setup)
+  (add-hook 'after-init-hook 'sml/setup))
+
 (provide 'setup-universal)
