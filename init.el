@@ -52,7 +52,6 @@
    (cons 'emacsd-tile melpa)
    (cons 'diminish melpa)
    (cons 'multiple-cursors melpa)
-   (cons 'guru-mode melpa)
    (cons 'rainbow-mode melpa)
    (cons 'rect-mark melpa)
    (cons 'emacsd-tile melpa)

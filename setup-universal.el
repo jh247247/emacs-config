@@ -81,10 +81,6 @@ Symbols matching the text at point are put first in the completion list."
 (autoload 'rm-kill-ring-save "rect-mark"
   "Copy a rectangular region to the kill ring." t)
 
-;; Let's be masochistic.
-(require 'guru-mode)
-(guru-global-mode 1)
-
 ;; add some nice tiling stuff.
 (require 'emacsd-tile)
 
@@ -97,6 +93,6 @@ Symbols matching the text at point are put first in the completion list."
 
 ;; rainbow mode init
 (require 'rainbow-mode)
-(rainbow-mode t)
+(rainbow-turn-on)
 
 (provide 'setup-universal)
