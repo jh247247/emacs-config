@@ -56,6 +56,7 @@
    (cons 'rainbow-mode melpa)
    (cons 'rect-mark melpa)
    (cons 'emacsd-tile melpa)
+   (cons 'smart-mode-line melpa)
    (cons 'smex melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
