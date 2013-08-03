@@ -92,5 +92,11 @@ Symbols matching the text at point are put first in the completion list."
 (require 'smart-mode-line)
 (if after-init-time (sml/setup)
   (add-hook 'after-init-hook 'sml/setup))
+(setq sml/active-background-color "navy")
+(setq sml/inactive-background-color "black")
+
+;; rainbow mode init
+(require 'rainbow-mode)
+(rainbow-mode t)
 
 (provide 'setup-universal)
