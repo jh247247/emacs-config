@@ -17,5 +17,6 @@
 (mmm-add-mode-ext-class 'python-mode nil 'python-rst)
 
 (add-hook 'python-mode-hook 'jedi:setup)
-
+(add-hook 'python-mode-hook '(lambda ()
+			       (setq-local whitespace-line-column 99)))
 (provide 'setup-python)

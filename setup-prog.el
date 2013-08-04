@@ -29,10 +29,11 @@
 (require 'highlight-escape-sequences)
 (add-hook 'prog-mode-hook 'hes-mode)
 
+(require 'whitespace)
 ;; display only tails of lines longer than 80 columns, tabs and
 ;; trailing whitespaces
 (setq whitespace-line-column 80
-      whitespace-style '(tabs trailing lines-tail))
+      whitespace-style '(face trailing lines-tail))
 
 ;; face for long lines' tails
 (set-face-attribute 'whitespace-line nil
