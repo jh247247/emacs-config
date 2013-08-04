@@ -17,4 +17,5 @@
 (mmm-add-mode-ext-class 'python-mode nil 'python-rst)
 
 (add-hook 'python-mode-hook 'jedi:setup)
+
 (provide 'setup-python)

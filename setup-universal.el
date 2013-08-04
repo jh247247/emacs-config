@@ -81,6 +81,9 @@ Symbols matching the text at point are put first in the completion list."
 (autoload 'rm-kill-ring-save "rect-mark"
   "Copy a rectangular region to the kill ring." t)
 
+;; nuke trailing whitespaces when writing to a file
+(add-hook 'write-file-hooks 'delete-trailing-whitespace)
+
 ;; add some nice tiling stuff.
 (require 'emacsd-tile)
 
@@ -94,5 +97,6 @@ Symbols matching the text at point are put first in the completion list."
 ;; rainbow mode init
 (require 'rainbow-mode)
 (rainbow-turn-on)
+
 
 (provide 'setup-universal)
