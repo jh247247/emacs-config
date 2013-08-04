@@ -33,7 +33,7 @@
 ;; display only tails of lines longer than 80 columns, tabs and
 ;; trailing whitespaces
 (setq whitespace-line-column 80
-      whitespace-style '(face trailing lines-tail))
+      whitespace-style '(face tabs trailing lines-tail))
 
 ;; face for long lines' tails
 (set-face-attribute 'whitespace-line nil
@@ -48,5 +48,8 @@
                     :weight 'bold)
 
 (add-hook 'prog-mode-hook 'whitespace-mode)
+
+;; make sure we DO NOT use tabs. they are evil.
+(setq-default indent-tabs-mode nil)
 
 (provide 'setup-prog)
