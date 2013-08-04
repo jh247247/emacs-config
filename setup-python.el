@@ -18,7 +18,8 @@
 
 (add-hook 'python-mode-hook 'jedi:setup)
 (add-hook 'python-mode-hook '(lambda ()
-			       (setq-local whitespace-line-column 99
-					   tab-width 2)))
+                               (setq-local whitespace-line-column 99)
+                               (setq-local python-indent 2)))
+(add-hook 'python-mode-hook 'mmm-mode)
 
 (provide 'setup-python)
