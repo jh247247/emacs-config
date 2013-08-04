@@ -29,5 +29,23 @@
 (require 'highlight-escape-sequences)
 (add-hook 'prog-mode-hook 'hes-mode)
 
+;; display only tails of lines longer than 80 columns, tabs and
+;; trailing whitespaces
+(setq whitespace-line-column 80
+      whitespace-style '(tabs trailing lines-tail))
+
+;; face for long lines' tails
+(set-face-attribute 'whitespace-line nil
+                    :background "red1"
+                    :foreground "yellow"
+                    :weight 'bold)
+
+;; face for Tabs
+(set-face-attribute 'whitespace-tab nil
+                    :background "red1"
+                    :foreground "yellow"
+                    :weight 'bold)
+
+(add-hook 'prog-mode-hook 'whitespace-mode)
 
 (provide 'setup-prog)
