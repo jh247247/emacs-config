@@ -19,5 +19,10 @@
 ;;(setq-default TeX-master nil) ; Query for master file.
 
 (require 'smartparens-latex)
-
+(add-hook 'LaTeX-mode-hook (lambda () 
+			     ((define-key latex-mode-map
+                                (kbd "<tab>")
+                                'indent-for-tab-command)
+                              (setq fill-column 80)
+                              (auto-fill-mode t))))
 (provide 'setup-latex)

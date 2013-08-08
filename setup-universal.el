@@ -91,12 +91,21 @@ Symbols matching the text at point are put first in the completion list."
 (require 'smart-mode-line)
 (if after-init-time (sml/setup)
   (add-hook 'after-init-hook 'sml/setup))
+
 (setq sml/active-background-color "navy")
 (setq sml/inactive-background-color "black")
 
 ;; rainbow mode init
 (require 'rainbow-mode)
-(rainbow-turn-on)
+(define-globalized-minor-mode global-rainbow-mode rainbow-mode
+  (lambda () (rainbow-mode 1)))
+
+(global-rainbow-mode 1)
+
+;; perspectives.
+(require 'perspective)
+(if after-init-time (persp-mode)
+  (add-hook 'after-init-hook 'persp-mode))
 
 
 (provide 'setup-universal)
