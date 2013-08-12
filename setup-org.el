@@ -40,8 +40,6 @@
 (require 'cdlatex)
 (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
 
-(add-hook 'org-mode-hook 'org-indent-mode)
-
 ;; Make windmove work in org-mode:
 (add-hook 'org-shiftup-final-hook 'windmove-up)
 (add-hook 'org-shiftleft-final-hook 'windmove-left)
