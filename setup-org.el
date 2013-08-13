@@ -45,7 +45,7 @@
 (add-hook 'org-shiftleft-final-hook 'windmove-left)
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
-(add-hook 'org-mode-hook ((lambda () ((setq fill-column 72)
-                                      (auto-fill-mode t)))))
+(add-hook 'org-mode-hook (lambda () ((setq-local fill-column 72)
+                                      (auto-fill-mode t))))
 
 (provide 'setup-org)

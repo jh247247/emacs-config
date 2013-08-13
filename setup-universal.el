@@ -107,5 +107,11 @@ Symbols matching the text at point are put first in the completion list."
 (if after-init-time (persp-mode)
   (add-hook 'after-init-hook 'persp-mode))
 
+(require 'visual-regexp-steroids)
+(define-key global-map (kbd "C-c r") 'vr/replace)
+(define-key global-map (kbd "C-c q") 'vr/query-replace)
+;; use visual-regexp's isearch
+(define-key esc-map (kbd "C-r") 'vr/isearch-backward) ;; C-M-r
+(define-key esc-map (kbd "C-s") 'vr/isearch-forward) ;; C-M-s
 
 (provide 'setup-universal)
