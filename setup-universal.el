@@ -114,5 +114,14 @@ Symbols matching the text at point are put first in the completion list."
 (global-unset-key (kbd "C-r"))
 (define-key global-map (kbd "C-r") 'vr/isearch-backward)
 (define-key global-map (kbd "C-s") 'vr/isearch-forward)
+(setq-default indicate-empty-lines t)
+
+(defun my-update-cursor ()
+  (setq cursor-type (if (or god-local-mode buffer-read-only)
+                        'box
+                      'bar)))
+
+(add-hook 'god-mode-enabled-hook 'my-update-cursor)
+(add-hook 'god-mode-disabled-hook 'my-update-cursor)
 
 (provide 'setup-universal)
