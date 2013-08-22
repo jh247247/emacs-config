@@ -20,6 +20,6 @@
 
 (require 'smartparens-latex)
 (add-hook 'LaTeX-mode-hook (lambda ()
-                             ((setq fill-column 80)
+                             ((setq-local fill-column 80)
                               (auto-fill-mode t))))
 (provide 'setup-latex)
