@@ -121,7 +121,7 @@ Symbols matching the text at point are put first in the completion list."
   (setq cursor-type (if (or god-local-mode buffer-read-only)
                         'bar
                       'box)))
-(add-hook 'god-mode-enabled-hook 'my-update-cursor)
+
 (add-hook 'god-mode-disabled-hook 'my-update-cursor)
 
 ;; set the key as menu to enter/leave god-mode.
@@ -144,7 +144,7 @@ Symbols matching the text at point are put first in the completion list."
   "Emacs quick move minor mode"
   t)
 ;; you can select the key you prefer to
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-c C-a") 'ace-jump-mode)
 
 (autoload
   'ace-jump-mode-pop-mark
@@ -153,6 +153,6 @@ Symbols matching the text at point are put first in the completion list."
   t)
 (eval-after-load "ace-jump-mode"
   '(ace-jump-mode-enable-mark-sync))
-(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+(define-key global-map (kbd "C-x C-a") 'ace-jump-mode-pop-mark)
 
 (provide 'setup-universal)
