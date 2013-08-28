@@ -155,4 +155,8 @@ Symbols matching the text at point are put first in the completion list."
   '(ace-jump-mode-enable-mark-sync))
 (define-key global-map (kbd "C-x C-a") 'ace-jump-mode-pop-mark)
 
+;;indent guide
+(require 'indent-guide)
+(indent-guide-global-mode)
+
 (provide 'setup-universal)

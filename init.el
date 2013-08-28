@@ -33,6 +33,7 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
+   (cons 'indent-guide melpa)
    (cons 'ace-jump-mode melpa)
    (cons 'move-text melpa)
    (cons 'visual-regexp-steroids melpa)
@@ -82,3 +83,6 @@
 
 ;; setup universal emacs stuff.
 (require 'setup-universal)
+
+;; add defuns and whatever.
+(require 'defuns)
