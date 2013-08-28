@@ -92,6 +92,7 @@ Symbols matching the text at point are put first in the completion list."
 (if after-init-time (sml/setup)
   (add-hook 'after-init-hook 'sml/setup))
 
+;; for some reason these values don't stick even though they are in custom.el...
 (setq sml/active-background-color "navy")
 (setq sml/inactive-background-color "black")
 
@@ -117,12 +118,16 @@ Symbols matching the text at point are put first in the completion list."
 (setq-default indicate-empty-lines t)
 
 ;; make cursor into a bar when in god-mode.
-(defun my-update-cursor ()
+(defun god-mode-update-cursor ()
   (setq cursor-type (if (or god-local-mode buffer-read-only)
                         'bar
                       'box)))
-(add-hook 'god-mode-enabled-hook 'my-update-cursor)
-(add-hook 'god-mode-disabled-hook 'my-update-cursor)
+(add-hook 'god-mode-enabled-hook
+	  (lambda () (setq sml/active-background-color "firebrick")
+	    (sml/setup) (god-mode-update-cursor)))
+(add-hook 'god-mode-disabled-hook
+	  (lambda () (setq sml/active-background-color "navy")
+	    (sml/setup) (god-mode-update-cursor)))
 
 ;; set the key as escape to enter/leave god-mode.
 (global-set-key (kbd "<escape>") 'god-local-mode)
