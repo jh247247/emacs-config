@@ -129,4 +129,12 @@ Symbols matching the text at point are put first in the completion list."
 
 (global-set-key (kbd "<menu>") 'god-local-mode)
 (global-set-key (kbd "<escape>") 'god-local-mode)
+
+;; multiple cursors, remember C-j is newline for multiple-cursors.
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
 (provide 'setup-universal)
