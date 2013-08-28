@@ -121,7 +121,7 @@ Symbols matching the text at point are put first in the completion list."
   (setq cursor-type (if (or god-local-mode buffer-read-only)
                         'bar
                       'box)))
-
+(add-hook 'god-mode-enabled-hook 'my-update-cursor)
 (add-hook 'god-mode-disabled-hook 'my-update-cursor)
 
 ;; set the key as escape to enter/leave god-mode.
