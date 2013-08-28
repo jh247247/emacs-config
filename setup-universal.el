@@ -116,14 +116,17 @@ Symbols matching the text at point are put first in the completion list."
 (define-key global-map (kbd "C-s") 'vr/isearch-forward)
 (setq-default indicate-empty-lines t)
 
+;; make cursor into a bar when in god-mode.
 (defun my-update-cursor ()
   (setq cursor-type (if (or god-local-mode buffer-read-only)
                         'bar
                       'box)))
-
 (add-hook 'god-mode-enabled-hook 'my-update-cursor)
 (add-hook 'god-mode-disabled-hook 'my-update-cursor)
 
+;; set the key as menu to enter/leave god-mode.
 (global-unset-key (kbd "<menu>"))
+
 (global-set-key (kbd "<menu>") 'god-local-mode)
+(global-set-key (kbd "<escape>") 'god-local-mode)
 (provide 'setup-universal)

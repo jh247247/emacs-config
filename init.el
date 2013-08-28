@@ -33,13 +33,11 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
-   (cons 'color-theme melpa)
    (cons 'move-text melpa)
    (cons 'visual-regexp-steroids melpa)
    (cons 'smartparens melpa)
    (cons 'auto-complete melpa)
    (cons 'mmm-mode melpa)
-   (cons 'color-theme melpa)
    (cons 'fic-mode melpa)
    (cons 'rainbow-delimiters melpa)
    (cons 'jedi melpa)
@@ -83,6 +81,3 @@
 
 ;; setup universal emacs stuff.
 (require 'setup-universal)
-
-
-
