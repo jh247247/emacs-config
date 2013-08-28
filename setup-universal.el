@@ -124,10 +124,7 @@ Symbols matching the text at point are put first in the completion list."
 
 (add-hook 'god-mode-disabled-hook 'my-update-cursor)
 
-;; set the key as menu to enter/leave god-mode.
-(global-unset-key (kbd "<menu>"))
-
-(global-set-key (kbd "<menu>") 'god-local-mode)
+;; set the key as escape to enter/leave god-mode.
 (global-set-key (kbd "<escape>") 'god-local-mode)
 
 ;; multiple cursors, remember C-j is newline for multiple-cursors.
