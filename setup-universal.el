@@ -122,15 +122,17 @@ Symbols matching the text at point are put first in the completion list."
   (setq cursor-type (if (or god-local-mode buffer-read-only)
                         'bar
                       'box)))
+
 (add-hook 'god-mode-enabled-hook
 	  (lambda () (setq sml/active-background-color "firebrick")
 	    (sml/setup) (god-mode-update-cursor)))
+
 (add-hook 'god-mode-disabled-hook
 	  (lambda () (setq sml/active-background-color "navy")
 	    (sml/setup) (god-mode-update-cursor)))
 
 ;; set the key as escape to enter/leave god-mode.
-(global-set-key (kbd "<escape>") 'god-local-mode)
+(global-set-key (kbd "<escape>") 'god-mode)
 
 ;; multiple cursors, remember C-j is newline for multiple-cursors.
 (require 'multiple-cursors)
@@ -157,8 +159,6 @@ Symbols matching the text at point are put first in the completion list."
   '(ace-jump-mode-enable-mark-sync))
 (define-key global-map (kbd "C-x C-a") 'ace-jump-mode-pop-mark)
 
-;;indent guide
-(require 'indent-guide)
-(indent-guide-global-mode)
+
 
 (provide 'setup-universal)
