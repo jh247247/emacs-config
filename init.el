@@ -17,8 +17,8 @@
 
 ;; add all subdirs to load path.
 (let ((default-directory "~/.emacs.d/"))
-      (normal-top-level-add-to-load-path '("."))
-      (normal-top-level-add-subdirs-to-load-path))
+  (normal-top-level-add-to-load-path '("."))
+  (normal-top-level-add-subdirs-to-load-path))
 
 ;; Save point position between sessions
 (require 'saveplace)
@@ -56,7 +56,8 @@
    (cons 'rect-mark melpa)
    (cons 'emacsd-tile melpa)
    (cons 'smart-mode-line melpa)
-   (cons 'smex melpa)))
+   (cons 'smex melpa)
+   (cons 'rect-mark melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
@@ -66,10 +67,8 @@
    (package-refresh-contents)
    (init--install-packages)))
 
-(add-to-list 'load-path
-                "~/path-to-yasnippet")
-   (require 'yasnippet)
-   (yas-global-mode 1)
+(require 'yasnippet)
+(yas-global-mode 1)
 
 ;; setup minibuffer stuff.
 (require 'setup-ido)
