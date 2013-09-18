@@ -118,14 +118,14 @@ Symbols matching the text at point are put first in the completion list."
 
 (eval-after-load "god" '(diminish 'god-mode))
 (add-hook 'god-mode-enabled-hook
-	  (lambda () (setq sml/active-background-color "firebrick")
-	    (message "GOD MODE")
-	    (sml/setup)))
+          (lambda () (setq sml/active-background-color "firebrick")
+            (message "GOD MODE")
+            (sml/setup)))
 
 (add-hook 'god-mode-disabled-hook
-	  (lambda () (setq sml/active-background-color "navy")
-	    (message "NORMAL MODE")
-	    (sml/setup)))
+          (lambda () (setq sml/active-background-color "navy")
+            (message "NORMAL MODE")
+            (sml/setup)))
 
 ;; set the key as escape to enter/leave god-mode.
 (global-set-key (kbd "<escape>") 'god-mode)
@@ -201,6 +201,24 @@ Symbols matching the text at point are put first in the completion list."
 (key-chord-define-global ";[" 'comment-region)
 (key-chord-define-global "o'" 'move-end-of-line)
 (key-chord-define-global "./" 'move-beginning-of-line)
+
+;; Support for marking a rectangle of text with highlighting.
+(define-key global-map (kbd "H-S-SPC") 'rm-set-mark)
+(define-key global-map (kbd "H-X") 'rm-exchange-point-and-mark)
+(define-key global-map (kbd "H-K") 'rm-kill-region)
+(define-key global-map (kbd "H-W") 'rm-kill-ring-save)
+(define-key global-map [S-down-mouse-1] 'rm-mouse-drag-region)
+
+(autoload 'rm-set-mark "rect-mark"
+  "Set mark for rectangle." t)
+(autoload 'rm-exchange-point-and-mark "rect-mark"
+  "Exchange point and mark for rectangle." t)
+(autoload 'rm-kill-region "rect-mark"
+  "Kill a rectangular region and save it in the kill ring." t)
+(autoload 'rm-kill-ring-save "rect-mark"
+  "Copy a rectangular region to the kill ring." t)
+(autoload 'rm-mouse-drag-region "rect-mark"
+  "Drag out a rectangular region with the mouse." t)
 
 
 (provide 'setup-universal)
