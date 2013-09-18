@@ -1,3 +1,5 @@
+(require 'diminish)
+
 (require 'windmove)
 (windmove-default-keybindings)
 
@@ -111,31 +113,27 @@ Symbols matching the text at point are put first in the completion list."
 (require 'visual-regexp-steroids)
 (define-key global-map (kbd "C-c r") 'vr/replace)
 (define-key global-map (kbd "C-c q") 'vr/query-replace)
-(global-unset-key (kbd "C-s"))
-(global-unset-key (kbd "C-r"))
-(define-key global-map (kbd "C-r") 'vr/isearch-backward)
-(define-key global-map (kbd "C-s") 'vr/isearch-forward)
+
 (setq-default indicate-empty-lines t)
 
-;; make cursor into a bar when in god-mode.
-(defun god-mode-update-cursor ()
-  (setq cursor-type (if (or god-local-mode buffer-read-only)
-                        'bar
-                      'box)))
-
+(eval-after-load "god" '(diminish 'god-mode))
 (add-hook 'god-mode-enabled-hook
 	  (lambda () (setq sml/active-background-color "firebrick")
-	    (sml/setup) (god-mode-update-cursor)))
+	    (message "GOD MODE")
+	    (sml/setup)))
 
 (add-hook 'god-mode-disabled-hook
 	  (lambda () (setq sml/active-background-color "navy")
-	    (sml/setup) (god-mode-update-cursor)))
+	    (message "NORMAL MODE")
+	    (sml/setup)))
 
 ;; set the key as escape to enter/leave god-mode.
 (global-set-key (kbd "<escape>") 'god-mode)
 
 ;; multiple cursors, remember C-j is newline for multiple-cursors.
 (require 'multiple-cursors)
+
+
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
@@ -148,7 +146,7 @@ Symbols matching the text at point are put first in the completion list."
   "Emacs quick move minor mode"
   t)
 ;; you can select the key you prefer to
-(define-key global-map (kbd "C-c C-a") 'ace-jump-mode)
+(define-key global-map (kbd "H-a") 'ace-jump-mode)
 
 (autoload
   'ace-jump-mode-pop-mark
@@ -157,8 +155,52 @@ Symbols matching the text at point are put first in the completion list."
   t)
 (eval-after-load "ace-jump-mode"
   '(ace-jump-mode-enable-mark-sync))
-(define-key global-map (kbd "C-x C-a") 'ace-jump-mode-pop-mark)
+(define-key global-map (kbd "H-S-a") 'ace-jump-mode-pop-mark)
 
+;; key chords apparently are good.
+(require 'key-chord)
+(key-chord-mode 1)
+(key-chord-define-global "fp" 'undo)
+
+
+(defun duplicate-line (arg)
+  "Duplicate current line, leaving point in lower line."
+  (interactive "*p")
+
+  ;; save the point for undo
+  (setq buffer-undo-list (cons (point) buffer-undo-list))
+
+  ;; local variables for start and end of line
+  (let ((bol (save-excursion (beginning-of-line) (point)))
+        eol)
+    (save-excursion
+
+      ;; don't use forward-line for this, because you would have
+      ;; to check whether you are at the end of the buffer
+      (end-of-line)
+      (setq eol (point))
+
+      ;; store the line and disable the recording of undo information
+      (let ((line (buffer-substring bol eol))
+            (buffer-undo-list t)
+            (count arg))
+        ;; insert the line arg times
+        (while (> count 0)
+          (newline)         ;; because there is no newline in 'line'
+          (insert line)
+          (setq count (1- count)))
+        )
+
+      ;; create the undo information
+      (setq buffer-undo-list (cons (cons eol (point)) buffer-undo-list)))
+    ) ; end-of-let
+
+  ;; put the point in the lowest line and return
+  (next-line arg))
+(key-chord-define-global "m," 'duplicate-line)
+(key-chord-define-global ";[" 'comment-region)
+(key-chord-define-global "o'" 'move-end-of-line)
+(key-chord-define-global "./" 'move-beginning-of-line)
 
 
 (provide 'setup-universal)
