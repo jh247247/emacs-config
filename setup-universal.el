@@ -1,4 +1,3 @@
-(require 'diminish)
 
 (require 'windmove)
 (windmove-default-keybindings)
@@ -9,8 +8,8 @@
   (interactive)
   (delete-trailing-whitespace)
   (indent-region (point-min) (point-max) nil)
-  (untabify (point-min) (point-max))
-  )
+  (untabify (point-min) (point-max)))
+
 ;; set it to some handy key binding.
 (global-set-key (kbd "<f3>") 'iwb)
 
@@ -85,9 +84,6 @@ Symbols matching the text at point are put first in the completion list."
 
 ;; nuke trailing whitespaces when writing to a file
 (add-hook 'write-file-hooks 'delete-trailing-whitespace)
-
-;; add some nice tiling stuff.
-(require 'emacsd-tile)
 
 ;; smart-mode-line stuff.
 (require 'smart-mode-line)
@@ -203,9 +199,9 @@ Symbols matching the text at point are put first in the completion list."
 (key-chord-define-global "./" 'move-beginning-of-line)
 
 ;; Support for marking a rectangle of text with highlighting.
-(define-key global-map (kbd "H-S-SPC") 'rm-set-mark)
-(define-key global-map (kbd "H-X") 'rm-exchange-point-and-mark)
-(define-key global-map (kbd "H-K") 'rm-kill-region)
+(define-key global-map (kbd "H-SPC") 'rm-set-mark)
+(define-key global-map (kbd "H-X H-x") 'rm-exchange-point-and-mark)
+(define-key global-map (kbd "H-k") 'rm-kill-region)
 (define-key global-map (kbd "H-W") 'rm-kill-ring-save)
 (define-key global-map [S-down-mouse-1] 'rm-mouse-drag-region)
 
@@ -219,6 +215,18 @@ Symbols matching the text at point are put first in the completion list."
   "Copy a rectangular region to the kill ring." t)
 (autoload 'rm-mouse-drag-region "rect-mark"
   "Drag out a rectangular region with the mouse." t)
+
+(require 'diminish)
+(eval-after-load "rainbow-mode"
+  '(diminish 'rainbow-mode))
+(eval-after-load "fic-mode"
+  '(diminish 'fic-mode))
+(eval-after-load "smartparens"
+  '(diminish 'smartparens-mode))
+(eval-after-load "whitespace"
+  '(diminish 'whitespace-mode))
+(eval-after-load "yasnippet"
+  '(diminish 'yas-minor-mode))
 
 
 (provide 'setup-universal)
