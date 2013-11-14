@@ -20,6 +20,8 @@
 
 (require 'smartparens-latex)
 (add-hook 'LaTeX-mode-hook (lambda ()
-                             ((setq-local fill-column 80)
-                              (auto-fill-mode t))))
+                             (local-set-key (kbd "RET")
+					     'reindent-then-newline-and-indent)))
+(add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+
 (provide 'setup-latex)

@@ -6,6 +6,7 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (require 'smartparens)
 (require 'smartparens-config)
+(setq sp-highlight-pair-overlay nil)
 (add-hook 'prog-mode-hook 'smartparens-mode)
 
 ;; auto complete stuff
@@ -48,7 +49,10 @@
                     :weight 'bold)
 
 (add-hook 'prog-mode-hook 'whitespace-mode)
-
+(add-hook 'prog-mode-hook '(lambda ()
+                             (local-set-key (kbd "RET")
+                                            'reindent-then-newline-and-indent)))
+(add-hook 'c-mode-hook 'hide-ifdef-mode)
 
 
 (provide 'setup-prog)

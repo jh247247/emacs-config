@@ -13,6 +13,11 @@
 ;; set it to some handy key binding.
 (global-set-key (kbd "<f3>") 'iwb)
 
+;; set shift + space to return because I can.
+;; note that this just inputs a newline in all modes except code where it
+;; indents as well.
+(global-set-key (kbd "S-SPC") 'reindent-then-newline-and-indent)
+
 ;; Turn on the menu bar for exploring new modes
 (global-set-key (kbd "C-<f10>") 'menu-bar-mode)
 
@@ -112,7 +117,6 @@ Symbols matching the text at point are put first in the completion list."
 
 (setq-default indicate-empty-lines t)
 
-(eval-after-load "god" '(diminish 'god-mode))
 (add-hook 'god-mode-enabled-hook
           (lambda () (setq sml/active-background-color "firebrick")
             (message "GOD MODE")
