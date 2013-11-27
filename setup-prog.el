@@ -54,5 +54,8 @@
                                             'reindent-then-newline-and-indent)))
 (add-hook 'c-mode-hook 'hide-ifdef-mode)
 
+;; try out flycheck mode.
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 
 (provide 'setup-prog)

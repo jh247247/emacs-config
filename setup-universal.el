@@ -91,13 +91,13 @@ Symbols matching the text at point are put first in the completion list."
 (add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
 ;; smart-mode-line stuff.
+(setq sml/theme 'dark)
 (require 'smart-mode-line)
-(if after-init-time (sml/setup)
-  (add-hook 'after-init-hook 'sml/setup))
 
 ;; for some reason these values don't stick even though they are in custom.el...
 (setq sml/active-background-color "navy")
 (setq sml/inactive-background-color "black")
+(sml/setup)
 
 ;; rainbow mode init
 (require 'rainbow-mode)
@@ -116,16 +116,6 @@ Symbols matching the text at point are put first in the completion list."
 (define-key global-map (kbd "C-c q") 'vr/query-replace)
 
 (setq-default indicate-empty-lines t)
-
-(add-hook 'god-mode-enabled-hook
-          (lambda () (setq sml/active-background-color "firebrick")
-            (message "GOD MODE")
-            (sml/setup)))
-
-(add-hook 'god-mode-disabled-hook
-          (lambda () (setq sml/active-background-color "navy")
-            (message "NORMAL MODE")
-            (sml/setup)))
 
 ;; set the key as escape to enter/leave god-mode.
 (global-set-key (kbd "<escape>") 'god-mode)

@@ -8,8 +8,7 @@
    (quote
     (js-mode js2-mode python-mode c-mode c++-mode java-mode)))
  '(mmm-parse-when-idle t)
- '(sml/active-background-color "navy")
- '(sml/inactive-background-color "black"))
+ '(sml/active-foreground-color "black"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
