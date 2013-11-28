@@ -10,11 +10,6 @@
 (setq inhibit-splash-screen t)
 
 
-;; Keep emacs Custom-settings in separate file
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
-
-
 ;; add all subdirs to load path.
 (let ((default-directory "~/.emacs.d/"))
   (normal-top-level-add-to-load-path '("."))
@@ -84,3 +79,7 @@
 
 ;; add defuns and whatever.
 (require 'defuns)
+
+;; Keep emacs Custom-settings in separate file
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)

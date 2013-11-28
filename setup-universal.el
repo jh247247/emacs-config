@@ -91,7 +91,7 @@ Symbols matching the text at point are put first in the completion list."
 (add-hook 'write-file-hooks 'delete-trailing-whitespace)
 
 ;; smart-mode-line stuff.
-(setq sml/theme 'dark)
+(setq sml/theme 'respectful)
 (require 'smart-mode-line)
 
 ;; for some reason these values don't stick even though they are in custom.el...
@@ -117,8 +117,6 @@ Symbols matching the text at point are put first in the completion list."
 
 (setq-default indicate-empty-lines t)
 
-;; set the key as escape to enter/leave god-mode.
-(global-set-key (kbd "<escape>") 'god-mode)
 
 ;; multiple cursors, remember C-j is newline for multiple-cursors.
 (require 'multiple-cursors)

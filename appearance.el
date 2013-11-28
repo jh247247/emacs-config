@@ -16,5 +16,5 @@
 
 (load-theme 'billw t t)
 (enable-theme 'billw)
-
+ (set-face-background 'modeline "medium blue")
 (provide 'appearance)
