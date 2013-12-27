@@ -11,9 +11,16 @@
 
 
 ;; add all subdirs to load path.
-(let ((default-directory "~/.emacs.d/"))
-  (normal-top-level-add-to-load-path '("."))
-  (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "~/.emacs.d/lisp/"))
+  (setq load-path
+        (append
+         (let ((load-path (copy-sequence load-path))) ;; Shadow
+           (append 
+            (copy-sequence (normal-top-level-add-to-load-path '(".")))
+            (normal-top-level-add-subdirs-to-load-path)))
+         load-path)))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 ;; Save point position between sessions
 (require 'saveplace)
