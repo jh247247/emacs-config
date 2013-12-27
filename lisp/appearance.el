@@ -14,7 +14,8 @@
                                         ;(color-theme-initialize)
                                         ;(color-theme-billw)
 
-(load-theme 'ample t t)
-(enable-theme 'ample)
+(load-theme 'ample-zen t)
+(set-background-color "black") ;do this again so I can keep the black background
+
 (set-face-background 'mode-line "medium blue")
 (provide 'appearance)

@@ -63,7 +63,7 @@
    (cons 'flycheck melpa)
    (cons 'perspective melpa)
    (cons 'cdlatex marmalade)
-   (cons 'ample-theme melpa)))
+   (cons 'ample-zen-theme melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
