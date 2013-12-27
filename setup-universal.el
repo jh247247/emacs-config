@@ -145,12 +145,6 @@ Symbols matching the text at point are put first in the completion list."
   '(ace-jump-mode-enable-mark-sync))
 (define-key global-map (kbd "H-S-a") 'ace-jump-mode-pop-mark)
 
-;; key chords apparently are good.
-(require 'key-chord)
-(key-chord-mode 1)
-(key-chord-define-global "fp" 'undo)
-
-
 (defun duplicate-line (arg)
   "Duplicate current line, leaving point in lower line."
   (interactive "*p")
@@ -185,11 +179,6 @@ Symbols matching the text at point are put first in the completion list."
 
   ;; put the point in the lowest line and return
   (next-line arg))
-(key-chord-define-global "m," 'duplicate-line)
-(key-chord-define-global ";[" 'comment-region)
-(key-chord-define-global "o'" 'move-end-of-line)
-(key-chord-define-global "./" 'move-beginning-of-line)
-
 ;; Support for marking a rectangle of text with highlighting.
 (define-key global-map (kbd "H-SPC") 'rm-set-mark)
 (define-key global-map (kbd "H-X H-x") 'rm-exchange-point-and-mark)
