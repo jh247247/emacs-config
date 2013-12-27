@@ -15,7 +15,7 @@
   (setq load-path
         (append
          (let ((load-path (copy-sequence load-path))) ;; Shadow
-           (append 
+           (append
             (copy-sequence (normal-top-level-add-to-load-path '(".")))
             (normal-top-level-add-subdirs-to-load-path)))
          load-path)))
@@ -62,7 +62,8 @@
    (cons 'auctex gnu)
    (cons 'flycheck melpa)
    (cons 'perspective melpa)
-   (cons 'cdlatex marmalade)))
+   (cons 'cdlatex marmalade)
+   (cons 'ample-theme melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
