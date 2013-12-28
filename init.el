@@ -62,7 +62,8 @@
    (cons 'auctex gnu)
    (cons 'flycheck melpa)
    (cons 'perspective melpa)
-   (cons 'cdlatex marmalade)))
+   (cons 'cdlatex marmalade)
+   (cons 'android-mode melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
