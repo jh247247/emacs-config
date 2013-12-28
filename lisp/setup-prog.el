@@ -57,5 +57,6 @@
 ;; try out flycheck mode.
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+(require 'android)
 
 (provide 'setup-prog)
