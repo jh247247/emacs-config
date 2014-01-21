@@ -20,6 +20,7 @@
             (normal-top-level-add-subdirs-to-load-path)))
          load-path)))
 
+;; add themes to load path.
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 ;; Save point position between sessions
@@ -91,6 +92,9 @@
 
 ;; add defuns and whatever.
 (require 'defuns)
+
+;; remember to add yasnippet...
+(yas-global-mode)
 
 ;; Keep emacs Custom-settings in separate file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
