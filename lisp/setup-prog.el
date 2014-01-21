@@ -57,6 +57,9 @@
 ;; try out flycheck mode.
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+;; make things easy to compile
+(global-set-key (kbd "<f1>") 'recompile)
+
 (require 'android)
 
 (provide 'setup-prog)
