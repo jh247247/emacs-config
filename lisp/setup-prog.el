@@ -60,4 +60,8 @@
 ;; make things easy to compile
 (global-set-key (kbd "<f1>") 'recompile)
 
+;; find file in project. That means that the project has to be in a
+;; git or svn project.
+
+(global-set-key (kbd "C-x f") 'fiplr-find-file)
 (provide 'setup-prog)

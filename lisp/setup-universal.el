@@ -209,5 +209,6 @@ Symbols matching the text at point are put first in the completion list."
 (eval-after-load "yasnippet"
   '(diminish 'yas-minor-mode))
 
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 (provide 'setup-universal)

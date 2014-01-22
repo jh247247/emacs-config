@@ -64,7 +64,9 @@
    (cons 'flycheck melpa)
    (cons 'perspective melpa)
    (cons 'cdlatex marmalade)
-   (cons 'android-mode melpa)))
+   (cons 'android-mode melpa)
+   (cons 'magit melpa)
+   (cons 'fiplr melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
