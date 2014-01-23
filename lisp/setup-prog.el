@@ -56,7 +56,10 @@
 
 ;; try out flycheck mode.
 (add-hook 'after-init-hook #'global-flycheck-mode)
-
+(require 'flycheck-tip)
+(add-hook 'prog-mode-hook '(lambda ()
+                             (local-set-key (kbd "C-c C-n")
+                                            'flycheck-tip-cycle)))
 ;; make things easy to compile
 (global-set-key (kbd "<f1>") 'recompile)
 
