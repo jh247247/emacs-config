@@ -68,7 +68,8 @@
    (cons 'cdlatex marmalade)
    (cons 'android-mode melpa)
    (cons 'magit melpa)
-   (cons 'fiplr melpa)))
+   (cons 'fiplr melpa)
+   (cons 'flyspell-lazy melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
@@ -103,3 +104,4 @@
 ;; Keep emacs Custom-settings in separate file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
+(put 'upcase-region 'disabled nil)

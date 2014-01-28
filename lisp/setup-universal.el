@@ -1,4 +1,7 @@
 
+(require 'flyspell-lazy)
+(flyspell-lazy-mode 1)
+
 (require 'windmove)
 (windmove-default-keybindings)
 
