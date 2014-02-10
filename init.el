@@ -69,7 +69,8 @@
    (cons 'android-mode melpa)
    (cons 'magit melpa)
    (cons 'fiplr melpa)
-   (cons 'flyspell-lazy melpa)))
+   (cons 'flyspell-lazy melpa)
+   (cons 'flycheck-tip melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
