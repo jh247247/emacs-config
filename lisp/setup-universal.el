@@ -137,7 +137,7 @@ Symbols matching the text at point are put first in the completion list."
   "Emacs quick move minor mode"
   t)
 ;; you can select the key you prefer to
-(define-key global-map (kbd "C-c C-a") 'ace-jump-mode)
+(define-key global-map (kbd "C-c a") 'ace-jump-mode)
 
 (autoload
   'ace-jump-mode-pop-mark
