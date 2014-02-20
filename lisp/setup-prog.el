@@ -49,9 +49,14 @@
                     :weight 'bold)
 
 (add-hook 'prog-mode-hook 'whitespace-mode)
+
+(defun reindent-sans-python () (interactive)
+       (if (eq major-mode 'python-mode)
+           (newline)
+         (reindent-then-newline-and-indent)))
 (add-hook 'prog-mode-hook '(lambda ()
                              (local-set-key (kbd "RET")
-                                            'reindent-then-newline-and-indent)))
+                                            'reindent-sans-python)))
 (add-hook 'c-mode-hook 'hide-ifdef-mode)
 
 ;; try out flycheck mode.
@@ -67,4 +72,15 @@
 ;; git or svn project.
 
 (global-set-key (kbd "C-x f") 'fiplr-find-file)
+
+(defun kill-and-join-forward (&optional arg)
+  (interactive "P")
+  (if (and (eolp) (not (bolp)))
+      (progn (forward-char 1)
+             (just-one-space 0)
+             (backward-char 1)
+             (kill-line arg))
+    (kill-line arg)))
+
+(global-set-key "\C-k" 'kill-and-join-forward)
 (provide 'setup-prog)
