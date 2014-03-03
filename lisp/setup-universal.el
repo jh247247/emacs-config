@@ -214,4 +214,6 @@ Symbols matching the text at point are put first in the completion list."
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
+(define-key global-map (kbd "ESC M-SPC") 'set-mark-command)
+
 (provide 'setup-universal)

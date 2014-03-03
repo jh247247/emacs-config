@@ -83,4 +83,7 @@
     (kill-line arg)))
 
 (global-set-key "\C-k" 'kill-and-join-forward)
+
+(setq compilation-scroll-output 'first-error)
+
 (provide 'setup-prog)
