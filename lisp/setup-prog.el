@@ -4,10 +4,6 @@
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-(require 'smartparens)
-(require 'smartparens-config)
-(setq sp-highlight-pair-overlay nil)
-(add-hook 'prog-mode-hook 'smartparens-mode)
 
 ;; auto complete stuff
 (require 'auto-complete)
@@ -19,6 +15,13 @@
   "No maybe for you. Only AC!"
   (unless (minibufferp (current-buffer))
     (auto-complete-mode 1)))
+
+;; auto import defines functions and stuff from header files
+(require 'ac-c-headers)
+(add-hook 'c-mode-hook
+          (lambda ()
+            (add-to-list 'ac-sources 'ac-source-c-headers)
+            (add-to-list 'ac-sources 'ac-source-c-header-symbols t)))
 
 ;; yasnippet
 (require 'yasnippet)
@@ -85,5 +88,8 @@
 (global-set-key "\C-k" 'kill-and-join-forward)
 
 (setq compilation-scroll-output 'first-error)
+
+;; add rainbow idents, yay
+(add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
 
 (provide 'setup-prog)

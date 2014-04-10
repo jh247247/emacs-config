@@ -70,7 +70,9 @@
    (cons 'magit melpa)
    (cons 'fiplr melpa)
    (cons 'flyspell-lazy melpa)
-   (cons 'flycheck-tip melpa)))
+   (cons 'flycheck-tip melpa)
+   (cons 'ac-c-headers melpa)
+   (cons 'rainbow-identifiers-mode melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
