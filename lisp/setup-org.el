@@ -28,7 +28,8 @@
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((latex . t)))
+ '((latex . t)
+   (plantuml . t)))
 
 
 (setq org-confirm-babel-evaluate nil)
