@@ -37,8 +37,6 @@
 ;; fontify code in code blocks
 (setq org-src-fontify-natively t)
 
-(require 'cdlatex)
-(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
 
 ;; Make windmove work in org-mode:
 (add-hook 'org-shiftup-final-hook 'windmove-up)

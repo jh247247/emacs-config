@@ -1,6 +1,7 @@
 ;; This is a config that will aim to be speedy. As in near instant start on an SSD.
 ;; Might not cut it on a conventional HDD but I guess nobody will use it anyway so there.
 
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 (byte-recompile-directory (expand-file-name "~/.emacs.d") 0)
 
 ;; Disable almost all GUI elements
@@ -42,7 +43,6 @@
    (cons 'ace-jump-mode melpa)
    (cons 'move-text melpa)
    (cons 'visual-regexp-steroids melpa)
-   (cons 'smartparens melpa)
    (cons 'auto-complete melpa)
    (cons 'mmm-mode melpa)
    (cons 'fic-mode melpa)
@@ -52,7 +52,6 @@
    (cons 'flx-ido melpa)
    (cons 'ido-ubiquitous melpa)
    (cons 'highlight-escape-sequences melpa)
-   (cons 'smartparens melpa)
    (cons 'yasnippet melpa)
    (cons 'diminish melpa)
    (cons 'multiple-cursors melpa)
@@ -72,7 +71,7 @@
    (cons 'flyspell-lazy melpa)
    (cons 'flycheck-tip melpa)
    (cons 'ac-c-headers melpa)
-   (cons 'rainbow-identifiers-mode melpa)))
+   (cons 'rainbow-identifiers melpa)))
 
 (when (not package-archive-contents) (package-refresh-contents))
 
