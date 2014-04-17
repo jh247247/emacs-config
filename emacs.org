@@ -1,0 +1,52 @@
+* Emacs config
+** Automatic package installation
+  This function makes it so that any package called with
+  =packages-install= will be downloaded and installed.
+  e.g: =(packages-install 'magit)=
+
+#+begin_src emacs-lisp
+  (require 'package)
+  
+  ;; add extra sources to the package archives
+  (setq package-archives
+        '(("melpa" . "http://melpa.milkbox.net/packages/")
+          ("org". "http://orgmode.org/elpa/")
+          ("marmalade" . "http://marmalade-repo.org/packages/")))
+          
+  
+  ;; activate all the packages
+  (package-initialize)
+  
+  ; fetch the list of packages available 
+  (unless package-archive-contents
+    (package-refresh-contents))
+  
+  ;; function to install a given list of packages.
+  (defun packages-install (&rest package-list)
+    (dolist (package package-list)
+      (unless (package-installed-p package)
+        (package-install package)))
+    (package-initialize)
+    (delete-other-windows))
+  
+  
+#+end_src
+
+** Appearance
+  These lines of code disable most of the gui elements used in emacs
+  so you can get so much more of that sweet, sweet text on your screen.
+#+begin_src emacs-lisp
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (setq inhibit-splash-screen t)
+  (setq initial-scratch-message "")
+  (setq inhibit-startup-message t)
+#+end_src
+
+** Theme
+   The theme that I use, nice for 
+#+begin_src emacs-lisp
+  (packages-install 'grandshell-theme)
+  (load-theme 'grandshell t)
+#+end_src
