@@ -50,3 +50,9 @@
   (packages-install 'grandshell-theme)
   (load-theme 'grandshell t)
 #+end_src
+   Note that there is a small bug when using xterm-256color, where black is not really black.
+   Hopefully this fixes it.
+#+begin_src emacs-lisp
+  (if window-system nil
+   (set-face-background 'default "color-16"))
+#+end_src   
