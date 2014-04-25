@@ -1,5 +1,4 @@
-* Emacs config
-** Automatic package installation
+* Automatic package installation
   This function makes it so that any package called with
   =packages-install= will be downloaded and installed.
   e.g: =(packages-install 'magit)=
@@ -32,7 +31,7 @@
   
 #+end_src
 
-** Appearance
+* Appearance
   These lines of code disable most of the gui elements used in emacs
   so you can get so much more of that sweet, sweet text on your screen.
 #+begin_src emacs-lisp
@@ -43,7 +42,7 @@
   (setq initial-scratch-message "")
   (setq inhibit-startup-message t)
 #+end_src
-
+  
 ** Theme
    The theme that I use, nice for 
 #+begin_src emacs-lisp
@@ -56,3 +55,27 @@
   (if window-system nil
    (set-face-background 'default "color-16"))
 #+end_src   
+* Extensions
+** Magit
+   This mode allows for interaction with git from within emacs.
+   #+BEGIN_SRC emacs-lisp
+   (packages-install 'magit)
+   #+END_SRC
+
+** Parenthesis matching
+   This needs to be fleshed out later when I have more spare time, but
+   I guess that this will do for now. 
+
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'global-mode-hook 'electric-pair-mode)
+   #+END_SRC
+
+** Org mode
+   This section handles interaction between emacs and the various
+   extensions that org mode handles.
+*** Plantuml
+    Plantuml is a pretty cool uml drawing tool that interacts with
+    emacs well due to =plantuml-mode=
+    #+BEGIN_SRC emacs-lisp
+    (packages-install 'plantuml-mode)
+    #+END_SRC
