@@ -1,7 +1,7 @@
 * Automatic package installation
   This function makes it so that any package called with
-  =packages-install= will be downloaded and installed.
-  e.g: =(packages-install 'magit)=
+  =packages-require= will be downloaded and installed.
+  e.g: =(packages-require 'magit)=
 
 #+begin_src emacs-lisp
   (require 'package)
@@ -21,7 +21,7 @@
     (package-refresh-contents))
   
   ;; function to install a given list of packages.
-  (defun packages-install (&rest package-list)
+  (defun packages-require (&rest package-list)
     (dolist (package package-list)
       (unless (package-installed-p package)
         (package-install package)))
@@ -46,7 +46,7 @@
 ** Theme
    The theme that I use, nice for 
 #+begin_src emacs-lisp
-  (packages-install 'grandshell-theme)
+  (packages-require 'grandshell-theme)
   (load-theme 'grandshell t)
 #+end_src
    Note that there is a small bug when using xterm-256color, where black is not really black.
@@ -59,7 +59,7 @@
 ** Magit
    This mode allows for interaction with git from within emacs.
    #+BEGIN_SRC emacs-lisp
-   (packages-install 'magit)
+   (packages-require 'magit)
    #+END_SRC
 
 ** Parenthesis matching
@@ -77,5 +77,6 @@
     Plantuml is a pretty cool uml drawing tool that interacts with
     emacs well due to =plantuml-mode=
     #+BEGIN_SRC emacs-lisp
-    (packages-install 'plantuml-mode)
+    (packages-require 'plantuml-mode)
     #+END_SRC
+
