@@ -62,6 +62,119 @@
    (packages-require 'magit)
    #+END_SRC
 
+** smex
+   This allows for autocomplete in the minibuffer when using =M-x= as
+   well as fuzzy matching.
+   #+BEGIN_SRC emacs-lisp
+     (packages-require 'smex)
+     
+     ;;; Smex
+     (autoload 'smex "smex"
+       "Smex is a M-x enhancement for Emacs, it provides a convenient interface to
+     your recently and most frequently used commands.")
+     ;;; This adds a hyphen on space, instead of blocking.
+     (defadvice smex (around space-inserts-hyphen activate compile)
+       (let ((ido-cannot-complete-command 
+              `(lambda ()
+                 (interactive)
+                 (if (string= " " (this-command-keys))
+                     (insert ?-)
+                   (funcall ,ido-cannot-complete-command)))))
+         ad-do-it))
+     
+     ;;; This adds abbreviation to commands, so that magit-status for
+     ;;; example might become mags
+     ;;; Filters ido-matches setting acronynm matches in front of the results
+     (defadvice ido-set-matches-1 (after ido-acronym-matches activate)
+       (if (> (length ido-text) 1)
+           (let ((regex (concat "^" (mapconcat 'char-to-string ido-text "[^-]*-")))
+                 (acronym-matches (list))
+                 (remove-regexes '("-menu-")))
+             ;; Creating the list of the results to be set as first
+             (dolist (item items)
+               (if (string-match (concat regex "[^-]*$") item) ;; strict match
+                   (add-to-list 'acronym-matches item)
+                 (if (string-match regex item) ;; appending relaxed match
+                     (add-to-list 'acronym-matches item t))))
+     
+             ;; Filtering ad-return-value
+             (dolist (to_remove remove-regexes)
+               (setq ad-return-value
+                     (delete-if (lambda (item)
+                                  (string-match to_remove item))
+                                ad-return-value)))
+     
+             ;; Creating resulting list
+             (setq ad-return-value
+                   (append acronym-matches
+                           ad-return-value))
+     
+             (delete-dups ad-return-value)
+             (reverse ad-return-value))))
+     
+     (global-set-key (kbd "M-x") 'smex)
+   #+END_SRC
+
+** ido
+   #+BEGIN_SRC emacs-lisp
+     (packages-require 'ido-ubiquitous)
+     (ido-ubiquitous-mode 1)
+     
+     (require 'ido)
+     (ido-mode t)
+     (setq ido-enable-prefix nil
+           ido-enable-flex-matching t
+           ido-case-fold nil
+           ido-auto-merge-work-directories-length -1
+           ido-create-new-buffer 'always
+           ido-use-filename-at-point nil
+           ido-max-prospects 10
+           ido-case-fold t)
+     
+     (defun sd/ido-define-keys () ;; C-n/p is more intuitive in vertical layout
+       (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+       (define-key ido-completion-map (kbd "<down>") 'ido-next-match)
+       (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
+       (define-key ido-completion-map (kbd "<up>") 'ido-prev-match))
+     
+     (add-hook
+      'ido-setup-hook
+      (lambda ()
+        ;; Go straight home
+        (define-key ido-file-completion-map
+          (kbd "~")
+          (lambda ()
+            (interactive)
+            (cond
+             ((looking-back "~/") (insert "projects/"))
+             ((looking-back "/") (insert "~/"))
+             (:else (call-interactively 'self-insert-command)))))
+     
+        ;; Use C-w to go back up a dir to better match normal usage of C-w
+        ;; - insert current file name with C-x C-w instead.
+        (define-key ido-file-completion-map (kbd "C-w") 'ido-delete-backward-updir)
+        (define-key ido-file-completion-map (kbd "C-x C-w") 'ido-copy-current-file-name)))
+     
+     ;; Always rescan buffer for imenu
+     (set-default 'imenu-auto-rescan t)
+     
+     (add-to-list 'ido-ignore-directories "target")
+     (add-to-list 'ido-ignore-directories "node_modules")
+     
+     ;; Fix ido-ubiquitous for newer packages
+     (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
+       `(eval-after-load ,package
+          '(defadvice ,cmd (around ido-ubiquitous-new activate)
+             (let ((ido-ubiquitous-enable-compatibility nil))
+               ad-do-it))))
+     
+     ;;; save this bit for later.
+     ;;(ido-ubiquitous-use-new-completing-read webjump 'webjump)
+     ;;(ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
+     ;;(ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)
+   #+END_SRC
+** auto-complete
+   
 ** Parenthesis matching
    This needs to be fleshed out later when I have more spare time, but
    I guess that this will do for now. 
@@ -80,3 +193,17 @@
     (packages-require 'plantuml-mode)
     #+END_SRC
 
+** Indenting whole buffer
+   #+BEGIN_SRC emacs-lisp
+     ;; does what it says on the tin for any language.
+     (defun iwb ()
+       "indent whole buffer"
+       (interactive)
+       (delete-trailing-whitespace)
+       (indent-region (point-min) (point-max) nil)
+       (untabify (point-min) (point-max)))
+     
+     ;; set it to some handy key binding.
+     (global-set-key (kbd "<f3>") 'iwb)
+     
+   #+END_SRC
