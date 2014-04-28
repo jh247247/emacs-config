@@ -173,8 +173,32 @@
      ;;(ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
      ;;(ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)
    #+END_SRC
+** Yasnippet
+   Allows for expansion of abbreviations of code.
+
+   For example expand =sysout= to =System.out.println= or something.
+   #+BEGIN_SRC emacs-lisp
+     (packages-require 'yasnippet)
+     (require 'yasnippet)
+     (yas-global-mode 1)
+     
+     ;; use built-in snippets as well as custom snippets (when I make them)
+     (setq yas-snippet-dirs (append yas-snippet-dirs
+                                    '("~/.emacs.d/snippets")))
+   #+END_SRC
 ** auto-complete
-   
+   #+BEGIN_SRC emacs-lisp
+     ;; auto complete stuff
+     (require 'auto-complete)
+     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+     (require 'auto-complete-config)
+     (ac-config-default)
+     (global-auto-complete-mode t)
+     (defun auto-complete-mode-maybe ()
+       "No maybe for you. Only AC!"
+       (unless (minibufferp (current-buffer))
+         (auto-complete-mode 1)))
+   #+END_SRC
 ** Parenthesis matching
    This needs to be fleshed out later when I have more spare time, but
    I guess that this will do for now. 
@@ -183,14 +207,45 @@
    (add-hook 'global-mode-hook 'electric-pair-mode)
    #+END_SRC
 
+** Line char limit
+   Setup a char limit of 100 chars for any text input. This is mostly
+   for input in a thin terminal (like my phone)
+   #+BEGIN_SRC emacs-lisp
+     (setq-default auto-fill-function 'do-auto-fill)
+     (set-fill-column 100)
+   #+END_SRC
+
+** Automatic save 
+   Don't rely on emacs idle auto-save. 
+   Tell it to save every 300 characters.
+   #+BEGIN_SRC emacs-lisp
+   (setq auto-save-interval 300) 
+   #+END_SRC
 ** Org mode
    This section handles interaction between emacs and the various
    extensions that org mode handles.
+*** Babel languages
+    Extend the org language by allowing code to be executed as the org
+    file is compiled.
+
+    #+BEGIN_SRC emacs-lisp
+      ;; active Org-babel languages
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((plantuml . t)))
+    #+END_SRC
 *** Plantuml
     Plantuml is a pretty cool uml drawing tool that interacts with
     emacs well due to =plantuml-mode=
     #+BEGIN_SRC emacs-lisp
     (packages-require 'plantuml-mode)
+    #+END_SRC
+
+    Note that it requires the path to the jar file to be set in order
+    to actually compile anything at all.
+    #+BEGIN_SRC emacs-lisp
+    (setq org-plantuml-jar-path
+      (expand-file-name "/usr/share/plantuml/plantuml.jar"))
     #+END_SRC
 
 ** Indenting whole buffer
