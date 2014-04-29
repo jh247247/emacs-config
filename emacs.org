@@ -232,7 +232,11 @@
       ;; active Org-babel languages
       (org-babel-do-load-languages
        'org-babel-load-languages
-       '((plantuml . t)))
+       '((latex . t)
+         (plantuml . t)))
+      
+      ;; fontify code in code blocks
+      (setq org-src-fontify-natively t)
     #+END_SRC
 *** Plantuml
     Plantuml is a pretty cool uml drawing tool that interacts with
@@ -261,4 +265,16 @@
      ;; set it to some handy key binding.
      (global-set-key (kbd "<f3>") 'iwb)
      
+   #+END_SRC
+** Custom yank function
+   This yank function accepts a prefix arg, to say how many times to
+   actually paste the stuff from the clipboard. Handy.
+   #+BEGIN_SRC emacs-lisp
+     (defun yank-repeat (arg)
+       "With numerical ARG, repeat last yank ARG times. "
+       (interactive "p*")
+       (dotimes (i arg)
+         (insert (car kill-ring))))
+     (global-unset-key (kbd "C-y"))
+     (define-key global-map (kbd "C-y") 'yank-repeat)
    #+END_SRC
