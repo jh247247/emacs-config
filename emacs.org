@@ -280,3 +280,17 @@
      (global-unset-key (kbd "C-y"))
      (define-key global-map (kbd "C-y") 'yank-repeat)
    #+END_SRC
+** Ace jump
+   #+BEGIN_SRC emacs-lisp
+     (packages-require 'ace-jump-mode)
+     (require 'ace-jump-mode)
+     (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+     ;; hack so that this works in org-mode too.
+     (add-hook 'org-mode-hook
+               (lambda ()
+                 (local-set-key (kbd "\C-c SPC") 'ace-jump-mode)))
+         
+     ;;If you also use viper mode:
+     ;; maybe one day...
+     ;(define-key viper-vi-global-user-map (kbd "SPC") 'ace-jump-mode)
+   #+END_SRC
