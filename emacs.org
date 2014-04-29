@@ -209,7 +209,7 @@
 
 ** Line char limit
    Setup a char limit of 100 chars for any text input. This is mostly
-   for input in a thin terminal (like my phone)
+   for input in a thin terminal (like my phone)   
    #+BEGIN_SRC emacs-lisp
      (setq-default auto-fill-function 'do-auto-fill)
      (set-fill-column 100)
@@ -252,7 +252,7 @@
       (expand-file-name "/usr/share/plantuml/plantuml.jar"))
     #+END_SRC
 
-** Indenting whole buffer
+** Indenting
    #+BEGIN_SRC emacs-lisp
      ;; does what it says on the tin for any language.
      (defun iwb ()
@@ -265,6 +265,8 @@
      ;; set it to some handy key binding.
      (global-set-key (kbd "<f3>") 'iwb)
      
+     ;; auto-indent on some certain chars globally
+     (electric-indent-mode +1)
    #+END_SRC
 ** Custom yank function
    This yank function accepts a prefix arg, to say how many times to
