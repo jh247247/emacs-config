@@ -301,8 +301,8 @@
    remember what I was doing before I quit.
 
    #+BEGIN_SRC emacs-lisp
-   (require 'saveplace)
-   (setq-default save-place t)
+     (require 'saveplace)
+     (setq-default save-place t)
    #+END_SRC
 
 ** Removing trailing whitespace
@@ -311,5 +311,23 @@
    lifesaver when writing makefiles and other files that require no
    extra whitespace.
    #+BEGIN_SRC emacs-lisp
-   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+     (add-hook 'before-save-hook 'delete-trailing-whitespace)
    #+END_SRC
+** Compilation
+Sometimes compilation can be a bit annoying. So to fix this, here is
+a handy function that compiles using the same makefile that was used
+last time!
+#+BEGIN_SRC emacs-lisp
+  (global-set-key [(f1)] 'compile-again)
+
+  (setq compilation-last-buffer nil)
+  (defun compile-again (pfx)
+    (interactive "p")
+    (if (and (eq pfx 1)
+                     compilation-last-buffer)
+            (progn
+                  (set-buffer compilation-last-buffer)
+                  (revert-buffer t t))
+          (call-interactively 'compile)))
+
+#+END_SRC
