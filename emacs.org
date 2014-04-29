@@ -5,21 +5,21 @@
 
 #+begin_src emacs-lisp
   (require 'package)
-  
+
   ;; add extra sources to the package archives
   (setq package-archives
         '(("melpa" . "http://melpa.milkbox.net/packages/")
           ("org". "http://orgmode.org/elpa/")
           ("marmalade" . "http://marmalade-repo.org/packages/")))
-          
-  
+
+
   ;; activate all the packages
   (package-initialize)
-  
-  ; fetch the list of packages available 
+
+  ; fetch the list of packages available
   (unless package-archive-contents
     (package-refresh-contents))
-  
+
   ;; function to install a given list of packages.
   (defun packages-require (&rest package-list)
     (dolist (package package-list)
@@ -27,8 +27,8 @@
         (package-install package)))
     (package-initialize)
     (delete-other-windows))
-  
-  
+
+
 #+end_src
 
 * Appearance
@@ -42,9 +42,9 @@
   (setq initial-scratch-message "")
   (setq inhibit-startup-message t)
 #+end_src
-  
+
 ** Theme
-   The theme that I use, nice for 
+   The theme that I use, nice for
 #+begin_src emacs-lisp
   (packages-require 'grandshell-theme)
   (load-theme 'grandshell t)
@@ -54,7 +54,7 @@
 #+begin_src emacs-lisp
   (if window-system nil
    (set-face-background 'default "color-16"))
-#+end_src   
+#+end_src
 * Extensions
 ** Magit
    This mode allows for interaction with git from within emacs.
@@ -67,21 +67,21 @@
    well as fuzzy matching.
    #+BEGIN_SRC emacs-lisp
      (packages-require 'smex)
-     
+
      ;;; Smex
      (autoload 'smex "smex"
        "Smex is a M-x enhancement for Emacs, it provides a convenient interface to
      your recently and most frequently used commands.")
      ;;; This adds a hyphen on space, instead of blocking.
      (defadvice smex (around space-inserts-hyphen activate compile)
-       (let ((ido-cannot-complete-command 
+       (let ((ido-cannot-complete-command
               `(lambda ()
                  (interactive)
                  (if (string= " " (this-command-keys))
                      (insert ?-)
                    (funcall ,ido-cannot-complete-command)))))
          ad-do-it))
-     
+
      ;;; This adds abbreviation to commands, so that magit-status for
      ;;; example might become mags
      ;;; Filters ido-matches setting acronynm matches in front of the results
@@ -96,22 +96,22 @@
                    (add-to-list 'acronym-matches item)
                  (if (string-match regex item) ;; appending relaxed match
                      (add-to-list 'acronym-matches item t))))
-     
+
              ;; Filtering ad-return-value
              (dolist (to_remove remove-regexes)
                (setq ad-return-value
                      (delete-if (lambda (item)
                                   (string-match to_remove item))
                                 ad-return-value)))
-     
+
              ;; Creating resulting list
              (setq ad-return-value
                    (append acronym-matches
                            ad-return-value))
-     
+
              (delete-dups ad-return-value)
              (reverse ad-return-value))))
-     
+
      (global-set-key (kbd "M-x") 'smex)
    #+END_SRC
 
@@ -119,7 +119,7 @@
    #+BEGIN_SRC emacs-lisp
      (packages-require 'ido-ubiquitous)
      (ido-ubiquitous-mode 1)
-     
+
      (require 'ido)
      (ido-mode t)
      (setq ido-enable-prefix nil
@@ -130,13 +130,13 @@
            ido-use-filename-at-point nil
            ido-max-prospects 10
            ido-case-fold t)
-     
+
      (defun sd/ido-define-keys () ;; C-n/p is more intuitive in vertical layout
        (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
        (define-key ido-completion-map (kbd "<down>") 'ido-next-match)
        (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
        (define-key ido-completion-map (kbd "<up>") 'ido-prev-match))
-     
+
      (add-hook
       'ido-setup-hook
       (lambda ()
@@ -149,25 +149,25 @@
              ((looking-back "~/") (insert "projects/"))
              ((looking-back "/") (insert "~/"))
              (:else (call-interactively 'self-insert-command)))))
-     
+
         ;; Use C-w to go back up a dir to better match normal usage of C-w
         ;; - insert current file name with C-x C-w instead.
         (define-key ido-file-completion-map (kbd "C-w") 'ido-delete-backward-updir)
         (define-key ido-file-completion-map (kbd "C-x C-w") 'ido-copy-current-file-name)))
-     
+
      ;; Always rescan buffer for imenu
      (set-default 'imenu-auto-rescan t)
-     
+
      (add-to-list 'ido-ignore-directories "target")
      (add-to-list 'ido-ignore-directories "node_modules")
-     
+
      ;; Fix ido-ubiquitous for newer packages
      (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
        `(eval-after-load ,package
           '(defadvice ,cmd (around ido-ubiquitous-new activate)
              (let ((ido-ubiquitous-enable-compatibility nil))
                ad-do-it))))
-     
+
      ;;; save this bit for later.
      ;;(ido-ubiquitous-use-new-completing-read webjump 'webjump)
      ;;(ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
@@ -181,7 +181,7 @@
      (packages-require 'yasnippet)
      (require 'yasnippet)
      (yas-global-mode 1)
-     
+
      ;; use built-in snippets as well as custom snippets (when I make them)
      (setq yas-snippet-dirs (append yas-snippet-dirs
                                     '("~/.emacs.d/snippets")))
@@ -201,7 +201,7 @@
    #+END_SRC
 ** Parenthesis matching
    This needs to be fleshed out later when I have more spare time, but
-   I guess that this will do for now. 
+   I guess that this will do for now.
 
    #+BEGIN_SRC emacs-lisp
    (add-hook 'global-mode-hook 'electric-pair-mode)
@@ -209,17 +209,17 @@
 
 ** Line char limit
    Setup a char limit of 100 chars for any text input. This is mostly
-   for input in a thin terminal (like my phone)   
+   for input in a thin terminal (like my phone)
    #+BEGIN_SRC emacs-lisp
      (setq-default auto-fill-function 'do-auto-fill)
      (set-fill-column 100)
    #+END_SRC
 
-** Automatic save 
-   Don't rely on emacs idle auto-save. 
+** Automatic save
+   Don't rely on emacs idle auto-save.
    Tell it to save every 300 characters.
    #+BEGIN_SRC emacs-lisp
-   (setq auto-save-interval 300) 
+   (setq auto-save-interval 300)
    #+END_SRC
 ** Org mode
    This section handles interaction between emacs and the various
@@ -234,7 +234,7 @@
        'org-babel-load-languages
        '((latex . t)
          (plantuml . t)))
-      
+
       ;; fontify code in code blocks
       (setq org-src-fontify-natively t)
     #+END_SRC
@@ -254,19 +254,20 @@
 
 ** Indenting
    #+BEGIN_SRC emacs-lisp
-     ;; does what it says on the tin for any language.
-     (defun iwb ()
-       "indent whole buffer"
-       (interactive)
-       (delete-trailing-whitespace)
-       (indent-region (point-min) (point-max) nil)
-       (untabify (point-min) (point-max)))
-     
+     (packages-require 'auto-indent-mode)
+     (require 'auto-indent-mode)
+
+     ;; indent files on ALL MODES
+     (auto-indent-global-mode t)
+
      ;; set it to some handy key binding.
-     (global-set-key (kbd "<f3>") 'iwb)
-     
-     ;; auto-indent on some certain chars globally
-     (electric-indent-mode +1)
+     (global-set-key (kbd "<f3>") 'indent-whole-file)
+
+     ;; sometimes I work with people that indent terribly.
+     ;; for shiggles, lets fix that automatically.
+     ;; note that this is a bit more 'nice' when working in a repo, so
+     ;; kinda misses the point but still useful nonetheless.
+     (setq auto-indent-on-visit-file t)
    #+END_SRC
 ** Custom yank function
    This yank function accepts a prefix arg, to say how many times to
@@ -277,8 +278,7 @@
        (interactive "p*")
        (dotimes (i arg)
          (insert (car kill-ring))))
-     (global-unset-key (kbd "C-y"))
-     (define-key global-map (kbd "C-y") 'yank-repeat)
+     (define-key global-map (kbd "C-x C-y") 'yank-repeat)
    #+END_SRC
 ** Ace jump
    #+BEGIN_SRC emacs-lisp
@@ -289,8 +289,27 @@
      (add-hook 'org-mode-hook
                (lambda ()
                  (local-set-key (kbd "\C-c SPC") 'ace-jump-mode)))
-         
+
      ;;If you also use viper mode:
      ;; maybe one day...
      ;(define-key viper-vi-global-user-map (kbd "SPC") 'ace-jump-mode)
+   #+END_SRC
+** Saving points between editing sessions
+   Sometimes editing code has me quitting at a particular point,
+   before I can do something. If I am at the same point when I
+   restart emacs (possibly on a different machine, via ssh) I can
+   remember what I was doing before I quit.
+
+   #+BEGIN_SRC emacs-lisp
+   (require 'saveplace)
+   (setq-default save-place t)
+   #+END_SRC
+
+** Removing trailing whitespace
+   When I save, sometimes there is nasty whitespace at the end of
+   some lines. This fixes this mistake. Note that this can be a
+   lifesaver when writing makefiles and other files that require no
+   extra whitespace.
+   #+BEGIN_SRC emacs-lisp
+   (add-hook 'before-save-hook 'delete-trailing-whitespace)
    #+END_SRC
