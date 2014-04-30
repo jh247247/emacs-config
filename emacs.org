@@ -237,6 +237,9 @@
 
       ;; fontify code in code blocks
       (setq org-src-fontify-natively t)
+
+      ;; Don't ask when executing code, idc
+      (setq org-confirm-babel-evaluate nil)
     #+END_SRC
 *** Plantuml
     Plantuml is a pretty cool uml drawing tool that interacts with
@@ -329,5 +332,22 @@ last time!
                   (set-buffer compilation-last-buffer)
                   (revert-buffer t t))
           (call-interactively 'compile)))
+  ;; some compilation stuff so that
+  (setq compilation-scroll-output 'first-error)
+#+END_SRC
 
+This automatically closes the compilation buffer when the program
+returns with code 0.
+#+BEGIN_SRC emacs-lisp
+    ;; Close the compilation window if there was no error at all.
+    (setq compilation-exit-message-function
+          (lambda (status code msg)
+            ;; If M-x compile exists with a 0
+            (when (and (eq status 'exit) (zerop code))
+              ;; then bury the *compilation* buffer, so that C-x b doesn't go there
+              (bury-buffer "*compilation*")
+              ;; and return to whatever were looking at before
+              (replace-buffer-in-windows "*compilation*"))
+            ;; Always return the anticipated result
+            (cons msg code)))
 #+END_SRC
