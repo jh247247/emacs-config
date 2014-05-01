@@ -327,27 +327,28 @@ last time!
   (defun compile-again (pfx)
     (interactive "p")
     (if (and (eq pfx 1)
-                     compilation-last-buffer)
-            (progn
-                  (set-buffer compilation-last-buffer)
-                  (revert-buffer t t))
-          (call-interactively 'compile)))
-  ;; some compilation stuff so that
+             compilation-last-buffer)
+        (progn
+          (set-buffer compilation-last-buffer)
+          (revert-buffer t t))
+      (call-interactively 'compile)))
+
+  ;; some compilation stuff so that it scrolls to the first error when
+  ;; it happens
   (setq compilation-scroll-output 'first-error)
 #+END_SRC
 
-This automatically closes the compilation buffer when the program
-returns with code 0.
 #+BEGIN_SRC emacs-lisp
-    ;; Close the compilation window if there was no error at all.
-    (setq compilation-exit-message-function
-          (lambda (status code msg)
-            ;; If M-x compile exists with a 0
-            (when (and (eq status 'exit) (zerop code))
-              ;; then bury the *compilation* buffer, so that C-x b doesn't go there
-              (bury-buffer "*compilation*")
-              ;; and return to whatever were looking at before
-              (replace-buffer-in-windows "*compilation*"))
-            ;; Always return the anticipated result
-            (cons msg code)))
+  ;; require winner mode for the auto closing of the compilation buffer.
+  (winner-mode 1)
+
+  (setq compilation-finish-functions 'compile-autoclose)
+  ;; Close the compilation window if there was no error at all.
+  (defun compile-autoclose (buffer string)
+    (cond ((string-match "finished" string)
+           (bury-buffer "*compilation*")
+           (winner-undo)
+           (message "Build successful."))
+          (t
+           (message "Compilation exited abnormally: %s" string))))
 #+END_SRC
