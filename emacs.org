@@ -290,7 +290,22 @@ pressed all the time!
 #+BEGIN_SRC emacs-lisp
   (packages-require 'god-mode)
   (require 'god-mode)
-  (global-set-key (kbd "F13")
+
+  ;; need to set this in console mode only or something...
+  (if (eq window-system 'nil)  (global-set-key [(f2)] 'god-mode-all))
+  (global-set-key (kbd "<escape>") 'god-mode-all)
+
+#+END_SRC
+
+#+RESULTS:
+: c/god-mode-update-cursor
+
+** Smart mode line
+Set the mode line to smart mode line. Should be pretty good.
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'smart-mode-line)
+  (setq sml/theme 'dark)
+  (sml/setup)
 #+END_SRC
 ** Ace jump
    #+BEGIN_SRC emacs-lisp
@@ -372,5 +387,6 @@ by some language switching keybinding or something. Really grinds my
 gears. So, to fix this, make a new keybinding that adds a short
 command to mark the buffer.
 #+BEGIN_SRC emacs-lisp
-  (define-key global-map (kbd "C-x SPC") 'set-mark-command)
-#+END_SRC
+  ;;(global-set-key (kbd "C-x SPC") 'set-mark-command)
+#+END_SR
+This was fixed with the inclusion of =god-mode=. No need to worry now.
