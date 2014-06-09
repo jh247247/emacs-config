@@ -363,6 +363,13 @@ last time!
           (t
            (message "Compilation exited abnormally: %s" string))))
 #+END_SRC
+** Spelling
+I like to have spelling for emacs (for org mode and others anyway)
+very useful for notes.
+#+BEGIN_SRC emacs-lisp
+  (dolist (hook '(org-mode-hook text-mode latex-mode))
+    (add-hook hook (lambda () (flyspell-mode 1))))
+#+END_SRC
 * Android workarounds
 I like to keep my stuff consistent across every system. Since
 android+ssh does some funny stuff I have to compensate.
