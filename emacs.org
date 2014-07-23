@@ -202,11 +202,12 @@
    #+END_SRC
 
 ** Parenthesis matching
-(Need to do some stuff with autopair (possibly) for extended things in
-some modes (such as org mode, with ++ and == and ~~ etc)
+Moving to smartparens because I just remember it being so much more
+"nice" and working how I would expect it to be working overall.
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'autopair)
-     (autopair-global-mode)
+     (packages-require 'smartparens)
+     (require 'smartparens-config)
+     (smartparens-global-mode)
    #+END_SRC
 
 ** Line char limit
@@ -289,7 +290,7 @@ some modes (such as org mode, with ++ and == and ~~ etc)
 Set the mode line to smart mode line. Should be pretty good.
 #+BEGIN_SRC emacs-lisp
   (packages-require 'smart-mode-line)
-  (setq sml/theme 'dark)
+;;  (setq sml/theme 'dark)
   (sml/setup)
 #+END_SRC
 ** Ace jump
@@ -369,6 +370,19 @@ very useful for notes.
 #+BEGIN_SRC emacs-lisp
   (dolist (hook '(org-mode-hook text-mode latex-mode))
     (add-hook hook (lambda () (flyspell-mode 1))))
+#+END_SRC
+Also something that is cool, auto-capitalization.
+Does what it says on the tin.
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'auto-capitalize)
+  (require 'auto-capitalize)
+#+END_SRC
+** Expand-region
+Expand region does some cool stuff, repeating the command expands the
+region that is selected. (word --> sentence --> paragraph etc)
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'expand-region)
+  (global-set-key (kbd "C-=") 'er/expand-region)
 #+END_SRC
 * Android workarounds
 I like to keep my stuff consistent across every system. Since
