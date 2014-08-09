@@ -190,16 +190,26 @@
    #+BEGIN_SRC emacs-lisp
      ;; auto complete stuff
      (packages-require 'auto-complete)
-     (require 'auto-complete)
-     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+
      (require 'auto-complete-config)
      (ac-config-default)
+
+     (ac-flyspell-workaround)
+     (ac-linum-workaround)
      (global-auto-complete-mode t)
+     (setq ac-auto-start 3)
+     (setq ac-dwim t)
+     (set-default 'ac-sources '(ac-source-yasnippet))
+
      (defun auto-complete-mode-maybe ()
        "No maybe for you. Only AC!"
        (unless (minibufferp (current-buffer))
          (auto-complete-mode 1)))
+
+     (define-key ac-complete-mode-map [tab] 'ac-expand)
    #+END_SRC
+
+
 
 ** Parenthesis matching
 Moving to smartparens because I just remember it being so much more
@@ -258,6 +268,14 @@ Moving to smartparens because I just remember it being so much more
       (expand-file-name "/usr/share/plantuml/plantuml.jar"))
     #+END_SRC
 
+*** Auto-complete
+Since org mode isn't in the ac-sources by default, let's add it with
+a handy package.
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'org-ac)
+  (require 'org-ac)
+  (org-ac/config-default)
+#+END_SRC
 ** Indenting
    #+BEGIN_SRC emacs-lisp
      (packages-require 'auto-indent-mode)
@@ -384,6 +402,13 @@ region that is selected. (word --> sentence --> paragraph etc)
   (packages-require 'expand-region)
   (global-set-key (kbd "C-=") 'er/expand-region)
 #+END_SRC
+** cdlatex
+cdlatex is a nifty minor mode that allows inserting commonly used
+math templates and syntax.
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'cdlatex)
+  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+#+END_SRC
 * Android workarounds
 I like to keep my stuff consistent across every system. Since
 android+ssh does some funny stuff I have to compensate.
@@ -395,3 +420,4 @@ this, make a new keybinding that adds a short command to mark the buffer.
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x SPC") 'set-mark-command)
 #+END_SR
+andr
