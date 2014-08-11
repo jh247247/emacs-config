@@ -189,26 +189,34 @@
 ** auto-complete
    #+BEGIN_SRC emacs-lisp
      ;; auto complete stuff
-     (packages-require 'auto-complete)
-
+     (packages-require 'auto-complete 'ac-math 'ac-dabbrev)
+     
      (require 'auto-complete-config)
      (ac-config-default)
-
+     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+     
      (ac-flyspell-workaround)
      (ac-linum-workaround)
      (global-auto-complete-mode t)
      (setq ac-auto-start 3)
      (setq ac-dwim t)
-     (set-default 'ac-sources '(ac-source-yasnippet))
-
+     (set-default 'ac-sources '(ac-source-yasnippet ac-source-dabbrev))
+     
+     ;; maths-y stuff for modes that support it.
+     (defun ac-latex-setup ()
+       (setq ac-sources (append '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands)
+                                ac-sources)))
+     
+     (add-hook 'LaTeX-mode-hook 'ac-LaTeX-mode-setup)
+     (add-hook 'org-mode-hook 'ac-LaTeX-mode-setup)
+     
      (defun auto-complete-mode-maybe ()
        "No maybe for you. Only AC!"
        (unless (minibufferp (current-buffer))
          (auto-complete-mode 1)))
-
+     
      (define-key ac-complete-mode-map [tab] 'ac-expand)
    #+END_SRC
-
 
 
 ** Parenthesis matching
@@ -409,6 +417,16 @@ math templates and syntax.
   (packages-require 'cdlatex)
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
 #+END_SRC
+** Hungry delete mode
+This "eats" all the whitespace before the cursor (or in front, if so
+desired).
+
+#+BEGIN_SRC emacs-lisp
+(packages-require 'hungry-delete)
+(require 'hungry-delete)
+(global-hungry-delete-mode)
+#+END_SRC
+
 * Android workarounds
 I like to keep my stuff consistent across every system. Since
 android+ssh does some funny stuff I have to compensate.
