@@ -192,6 +192,8 @@
      (packages-require 'auto-complete 'ac-math 'ac-dabbrev)
 
      (require 'auto-complete-config)
+     (require 'ac-math)
+
      (ac-config-default)
      (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 
@@ -201,6 +203,9 @@
      (setq ac-auto-start 3)
      (setq ac-dwim t)
      (set-default 'ac-sources '(ac-source-yasnippet ac-source-dabbrev))
+
+     (add-to-list 'ac-modes 'latex-mode)
+     (add-to-list 'ac-modes 'org-mode)
 
      ;; maths-y stuff for modes that support it.
      (defun ac-latex-setup ()
