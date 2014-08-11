@@ -254,7 +254,8 @@ Moving to smartparens because I just remember it being so much more
       (org-babel-do-load-languages
        'org-babel-load-languages
        '((latex . t)
-         (plantuml . t)))
+         (plantuml . t)
+         (octave . t)))
 
       ;; fontify code in code blocks
       (setq org-src-fontify-natively t)
