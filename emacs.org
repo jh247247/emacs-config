@@ -239,6 +239,9 @@ Moving to smartparens because I just remember it being so much more
    #+BEGIN_SRC emacs-lisp
      (setq-default auto-fill-function 'do-auto-fill)
      (set-fill-column 100)
+     (add-hook 'prog-mode '(lambda () (interactive)
+                             (setq-local
+                              comment-auto-fill-only-comments t)))
    #+END_SRC
 
 ** Automatic save
