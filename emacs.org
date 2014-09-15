@@ -225,12 +225,11 @@
 
 
 ** Parenthesis matching
-Moving to smartparens because I just remember it being so much more
-"nice" and working how I would expect it to be working overall.
    #+BEGIN_SRC emacs-lisp
      (packages-require 'smartparens)
      (require 'smartparens-config)
      (smartparens-global-mode)
+
    #+END_SRC
 
 ** Line char limit
@@ -462,6 +461,15 @@ With prefix P, create local abbrev. Otherwise it will be global."
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
 #+END_SRC
+
+** rectangle copy/paste
+Sometimes I need to copy/paste a rectangular section of text. This
+helps.
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'phi-rectangle)
+  (require 'phi-rectangle)
+#+END_SRC
+
 * Android workarounds
 I like to keep my stuff consistent across every system. Since
 android+ssh does some funny stuff I have to compensate.
@@ -469,8 +477,9 @@ android+ssh does some funny stuff I have to compensate.
 In android, =Ctrl+SPC= does not actually go through since it is +eaten
 by some language switching keybinding or something.+ actually an error
 in the matrix of the keyboard. Really grinds my gears. So, to fix
-this, make a new keybinding that adds a short command to mark the buffer.
+this, make a new keybinding that adds a short command to mark the
+buffer.
+
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x SPC") 'set-mark-command)
-#+END_SR
-andr
+  (global-set-key (kbd "C-x C-SPC") 'set-mark-command)
+#+END_SRC
