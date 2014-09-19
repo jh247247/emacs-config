@@ -222,8 +222,6 @@
 
      (define-key ac-complete-mode-map [tab] 'ac-expand)
    #+END_SRC
-
-
 ** Parenthesis matching
    #+BEGIN_SRC emacs-lisp
      (packages-require 'smartparens)
@@ -434,7 +432,7 @@ same mistake it will automatically change it to the correct spelling.
 
 Blatantly stolen from endlessparenthesis.com
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-.") 'endless/ispell-word-then-abbrev)
+(define-key ctl-x-map "\C-i" 'endless/ispell-word-then-abbrev)
 
 (defun endless/ispell-word-then-abbrev (p)
   "Call `ispell-word'. Then create an abbrev for the correction made.
@@ -453,9 +451,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
 (setq save-abbrevs t)
 (setq-default abbrev-mode t)
 #+END_SRC
-
-
-
 ** File extension association
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
@@ -466,8 +461,29 @@ With prefix P, create local abbrev. Otherwise it will be global."
 Sometimes I need to copy/paste a rectangular section of text. This
 helps.
 #+BEGIN_SRC emacs-lisp
-  (packages-require 'phi-rectangle)
-  (require 'phi-rectangle)
+  (packages-require 'rect-mark)
+  (require 'rect-mark)
+  (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
+  (global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
+  (global-set-key (kbd "C-x r C-w")   'rm-kill-region)
+  (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
+#+END_SRC
+** Some perspective
+This is essentially tagged workspaces in emacs. Therefore all the
+things that you work on don't get mushed together in one large list
+of buffers.
+
+#+BEGIN_SRC emacs-lisp
+ ; (packages-require 'persp-mode)
+;  (persp-mode)
+#+END_SRC
+** Rainbow delimiters
+Add some color to the delimiters so that you can see what depth you
+are at.
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'rainbow-delimiters)
+  (require 'rainbow-delimiters)
+  (global-rainbow-delimiters-mode)
 #+END_SRC
 
 * Android workarounds
