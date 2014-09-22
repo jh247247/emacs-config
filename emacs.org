@@ -474,8 +474,8 @@ things that you work on don't get mushed together in one large list
 of buffers.
 
 #+BEGIN_SRC emacs-lisp
- ; (packages-require 'persp-mode)
-;  (persp-mode)
+  (packages-require 'persp-mode)
+  (persp-mode)
 #+END_SRC
 ** Rainbow delimiters
 Add some color to the delimiters so that you can see what depth you
@@ -486,6 +486,19 @@ are at.
   (global-rainbow-delimiters-mode)
 #+END_SRC
 
+** God-mode
+God mode is a mode that changes the command so that it does not
+require pressing the control key. It's as if the control key is
+pressed all the time!
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'god-mode)
+  (require 'god-mode)
+
+  ;; need to set this in console mode only or something...
+  (if (eq window-system 'nil)  (global-set-key [(f2)] 'god-mode-all))
+  (global-set-key (kbd "<escape>") 'god-mode-all)
+
+#+END_SRC
 * Android workarounds
 I like to keep my stuff consistent across every system. Since
 android+ssh does some funny stuff I have to compensate.
@@ -497,5 +510,5 @@ this, make a new keybinding that adds a short command to mark the
 buffer.
 
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x C-SPC") 'set-mark-command)
+  (global-set-key (kbd "C-x SPC") 'set-mark-command)
 #+END_SRC
