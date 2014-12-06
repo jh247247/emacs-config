@@ -292,20 +292,21 @@ a handy package.
 #+END_SRC
 ** Indenting
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'auto-indent-mode)
-     (require 'auto-indent-mode)
-
-     ;; indent files on ALL MODES
-     (auto-indent-global-mode t)
+     (defun iwb ()
+       "indent whole buffer"
+       (interactive)
+       (delete-trailing-whitespace)
+       (indent-region (point-min) (point-max) nil)
+       (untabify (point-min) (point-max)))
 
      ;; set it to some handy key binding.
-     (global-set-key (kbd "<f3>") 'indent-whole-file)
+     (global-set-key (kbd "<f3>") 'iwb)
 
      ;; sometimes I work with people that indent terribly.
      ;; for shiggles, lets fix that automatically.
      ;; note that this is a bit more 'nice' when working in a repo, so
      ;; kinda misses the point but still useful nonetheless.
-     (setq auto-indent-on-visit-file t)
+     ;; (setq auto-indent-on-visit-file t)
    #+END_SRC
 ** Custom yank function
    This yank function accepts a prefix arg, to say how many times to
@@ -468,22 +469,14 @@ helps.
   (global-set-key (kbd "C-x r C-w")   'rm-kill-region)
   (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
 #+END_SRC
-** Some perspective
-This is essentially tagged workspaces in emacs. Therefore all the
-things that you work on don't get mushed together in one large list
-of buffers.
 
-#+BEGIN_SRC emacs-lisp
-  (packages-require 'persp-mode)
-  (persp-mode)
-#+END_SRC
 ** Rainbow delimiters
 Add some color to the delimiters so that you can see what depth you
 are at.
 #+BEGIN_SRC emacs-lisp
   (packages-require 'rainbow-delimiters)
   (require 'rainbow-delimiters)
-  (global-rainbow-delimiters-mode)
+  (rainbow-delimiters-mode)
 #+END_SRC
 
 ** God-mode
@@ -498,6 +491,45 @@ pressed all the time!
   (if (eq window-system 'nil)  (global-set-key [(f2)] 'god-mode-all))
   (global-set-key (kbd "<escape>") 'god-mode-all)
 
+#+END_SRC
+
+** EasyPG
+I want to be able to encrypt some files. This is the way I want to do
+it.
+
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'epa)
+  (require 'epa)
+  (when (require 'epa-file nil 'noerror)
+    (epa-file-enable)
+
+    ;; t      to always ask for user
+    ;; nil    to ask for users unless specified
+    ;;'silent to use symmetric encryption:
+    (setq epa-file-select-key 'silent)
+
+    ;;Note: if you have an instance of seahorse running, then the environment
+    ;;variable GPG_AGENT_INFO=/tmp/seahorse-nDQm50/S.gpg-agent:6321:1, which
+    ;;causes emacs to start a GUI for password, instead of using mini-buffer.
+
+    (setenv "GPG_AGENT_INFO" nil)
+    ;; Note: another form is:
+    ;;(setenv (concat "GPG_AGENT_INFO" nil))
+    )
+#+END_SRC
+
+** Multiple cursors
+This adds many cursors to emacs, so you can edit many lines at the
+same time. Pretty handy for things that need to be changed and you
+can't be bothered scripting.
+
+#+BEGIN_SRC emacs-lisp
+(packages-require 'multiple-cursors)
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 #+END_SRC
 * Android workarounds
 I like to keep my stuff consistent across every system. Since
