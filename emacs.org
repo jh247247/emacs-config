@@ -85,7 +85,6 @@
            helm-recentf-fuzzy-match    t)
      (setq helm-semantic-fuzzy-match t
            helm-imenu-fuzzy-match    t)
-     (setq helm-locate-fuzzy-match t)
      (global-set-key (kbd "C-c h o") 'helm-occur)
    #+END_SRC
    
