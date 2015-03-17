@@ -88,6 +88,13 @@
      (global-set-key (kbd "C-c h o") 'helm-occur)
    #+END_SRC
    
+** ido-mode hack
+   I like the folder navigation in ido better than helm.
+   #+begin_src emacs-lisp
+     (packages-require 'ido)
+     (ido-mode)
+   #+end_src
+
 ** Yasnippet
    Allows for expansion of abbreviations of code.
 
