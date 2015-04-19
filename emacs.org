@@ -62,39 +62,117 @@
    (packages-require 'magit)
    #+END_SRC
 
-
-** Helm
+** smex
+   This allows for autocomplete in the minibuffer when using =M-x= as
+   well as fuzzy matching.
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'helm)
-     (require 'helm-config)
-     (helm-mode 1)
-     ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
-     ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
-     ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-     (global-set-key (kbd "C-c h") 'helm-command-prefix)
-     (global-unset-key (kbd "C-x c"))
+     (packages-require 'smex)
 
-     (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-     (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-     (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
-     (global-set-key (kbd "M-x") 'helm-M-x)
-     (setq helm-M-x-fuzzy-match t) ;; optional fuzzy matching for helm-M-x
-     (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-     (global-set-key (kbd "C-x b") 'helm-mini)
-     (setq helm-buffers-fuzzy-matching t
-           helm-recentf-fuzzy-match    t)
-     (setq helm-semantic-fuzzy-match t
-           helm-imenu-fuzzy-match    t)
-     (global-set-key (kbd "C-c h o") 'helm-occur)
+     ;;; Smex
+     (autoload 'smex "smex"
+       "Smex is a M-x enhancement for Emacs, it provides a convenient interface to
+     your recently and most frequently used commands.")
+     ;;; This adds a hyphen on space, instead of blocking.
+     (defadvice smex (around space-inserts-hyphen activate compile)
+       (let ((ido-cannot-complete-command
+              `(lambda ()
+                 (interactive)
+                 (if (string= " " (this-command-keys))
+                     (insert ?-)
+                   (funcall ,ido-cannot-complete-command)))))
+         ad-do-it))
+
+     ;;; This adds abbreviation to commands, so that magit-status for
+     ;;; example might become mags
+     ;;; Filters ido-matches setting acronynm matches in front of the results
+     (defadvice ido-set-matches-1 (after ido-acronym-matches activate)
+       (if (> (length ido-text) 1)
+           (let ((regex (concat "^" (mapconcat 'char-to-string ido-text "[^-]*-")))
+                 (acronym-matches (list))
+                 (remove-regexes '("-menu-")))
+             ;; Creating the list of the results to be set as first
+             (dolist (item items)
+               (if (string-match (concat regex "[^-]*$") item) ;; strict match
+                   (add-to-list 'acronym-matches item)
+                 (if (string-match regex item) ;; appending relaxed match
+                     (add-to-list 'acronym-matches item t))))
+
+             ;; Filtering ad-return-value
+             (dolist (to_remove remove-regexes)
+               (setq ad-return-value
+                     (delete-if (lambda (item)
+                                  (string-match to_remove item))
+                                ad-return-value)))
+
+             ;; Creating resulting list
+             (setq ad-return-value
+                   (append acronym-matches
+                           ad-return-value))
+
+             (delete-dups ad-return-value)
+             (reverse ad-return-value))))
+
+     (global-set-key (kbd "M-x") 'smex)
    #+END_SRC
-   
-** ido-mode hack
-   I like the folder navigation in ido better than helm.
-   #+begin_src emacs-lisp
-     (packages-require 'ido)
-     (ido-mode)
-   #+end_src
 
+** ido
+   #+BEGIN_SRC emacs-lisp
+     (packages-require 'ido-ubiquitous)
+     (ido-ubiquitous-mode 1)
+
+     (require 'ido)
+     (ido-mode t)
+     (setq ido-enable-prefix nil
+           ido-enable-flex-matching t
+           ido-case-fold nil
+           ido-auto-merge-work-directories-length -1
+           ido-create-new-buffer 'always
+           ido-use-filename-at-point nil
+           ido-max-prospects 10
+           ido-case-fold t)
+
+     (defun sd/ido-define-keys () ;; C-n/p is more intuitive in vertical layout
+       (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+       (define-key ido-completion-map (kbd "<down>") 'ido-next-match)
+       (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
+       (define-key ido-completion-map (kbd "<up>") 'ido-prev-match))
+
+     (add-hook
+      'ido-setup-hook
+      (lambda ()
+        ;; Go straight home
+        (define-key ido-file-completion-map
+          (kbd "~")
+          (lambda ()
+            (interactive)
+            (cond
+             ((looking-back "~/") (insert "projects/"))
+             ((looking-back "/") (insert "~/"))
+             (:else (call-interactively 'self-insert-command)))))
+
+        ;; Use C-w to go back up a dir to better match normal usage of C-w
+        ;; - insert current file name with C-x C-w instead.
+        (define-key ido-file-completion-map (kbd "C-w") 'ido-delete-backward-updir)
+        (define-key ido-file-completion-map (kbd "C-x C-w") 'ido-copy-current-file-name)))
+
+     ;; Always rescan buffer for imenu
+     (set-default 'imenu-auto-rescan t)
+
+     (add-to-list 'ido-ignore-directories "target")
+     (add-to-list 'ido-ignore-directories "node_modules")
+
+     ;; Fix ido-ubiquitous for newer packages
+     (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
+       `(eval-after-load ,package
+          '(defadvice ,cmd (around ido-ubiquitous-new activate)
+             (let ((ido-ubiquitous-enable-compatibility nil))
+               ad-do-it))))
+
+     ;;; save this bit for later.
+     ;;(ido-ubiquitous-use-new-completing-read webjump 'webjump)
+     ;;(ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
+     ;;(ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)
+   #+END_SRC
 ** Yasnippet
    Allows for expansion of abbreviations of code.
 
@@ -205,13 +283,13 @@
     #+END_SRC
 
 *** Auto-complete
-    Since org mode isn't in the ac-sources by default, let's add it with
-    a handy package.
-    #+BEGIN_SRC emacs-lisp
-      (packages-require 'org-ac)
-      (require 'org-ac)
-      (org-ac/config-default)
-    #+END_SRC
+Since org mode isn't in the ac-sources by default, let's add it with
+a handy package.
+#+BEGIN_SRC emacs-lisp
+  (packages-require 'org-ac)
+  (require 'org-ac)
+  (org-ac/config-default)
+#+END_SRC
 ** Indenting
    #+BEGIN_SRC emacs-lisp
      (defun iwb ()
@@ -273,8 +351,8 @@ Set the mode line to smart mode line. Should be pretty good.
    #+BEGIN_SRC emacs-lisp
      (require 'saveplace)
      (setq-default save-place t)
-   #+END_SR
-C
+   #+END_SRC
+
 ** Removing trailing whitespace
    When I save, sometimes there is nasty whitespace at the end of
    some lines. This fixes this mistake. Note that this can be a
@@ -375,10 +453,10 @@ With prefix P, create local abbrev. Otherwise it will be global."
 (setq-default abbrev-mode t)
 #+END_SRC
 ** File extension association
-   #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
-   #+END_SRC
+#+END_SRC
 
 ** rectangle copy/paste
 Sometimes I need to copy/paste a rectangular section of text. This
@@ -441,29 +519,28 @@ it.
 #+END_SRC
 
 ** Multiple cursors
-   This adds many cursors to emacs, so you can edit many lines at the
-   same time. Pretty handy for things that need to be changed and you
-   can't be bothered scripting.
+This adds many cursors to emacs, so you can edit many lines at the
+same time. Pretty handy for things that need to be changed and you
+can't be bothered scripting.
 
-   #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 (packages-require 'multiple-cursors)
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-   #+END_SRC
+#+END_SRC
 * Android workarounds
-  I like to keep my stuff consistent across every system. Since
-  android+ssh does some funny stuff I have to compensate.
+I like to keep my stuff consistent across every system. Since
+android+ssh does some funny stuff I have to compensate.
 ** Marking
-   In android, =Ctrl+SPC= does not actually go through since it is +eaten
-   by some language switching keybinding or something.+ actually an error
-   in the matrix of the keyboard. Really grinds my gears. So, to fix
-   this, make a new keybinding that adds a short command to mark the
-   buffer.
+In android, =Ctrl+SPC= does not actually go through since it is +eaten
+by some language switching keybinding or something.+ actually an error
+in the matrix of the keyboard. Really grinds my gears. So, to fix
+this, make a new keybinding that adds a short command to mark the
+buffer.
 
-   #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x SPC") 'set-mark-command)
-   #+END_SRC
-
+#+END_SRC
