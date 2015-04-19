@@ -482,7 +482,8 @@ are at.
 #+BEGIN_SRC emacs-lisp
   (packages-require 'rainbow-delimiters)
   (require 'rainbow-delimiters)
-  (global-rainbow-delimiters-mode)
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'org-mode-hook #'rainbow-delimiters-mode)
 #+END_SRC
 
 ** God-mode
