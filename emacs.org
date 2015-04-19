@@ -59,7 +59,8 @@
 ** Magit
    This mode allows for interaction with git from within emacs.
    #+BEGIN_SRC emacs-lisp
-   (packages-require 'magit)
+     (packages-require 'magit)
+     (setq magit-last-seen-setup-instructions "1.4.0")
    #+END_SRC
 
 ** smex
@@ -231,11 +232,11 @@
    #+END_SRC
 
 ** Line char limit
-   Setup a char limit of 100 chars for any text input. This is mostly
+   Setup a char limit of 80 chars for any text input. This is mostly
    for input in a thin terminal (like my phone)
    #+BEGIN_SRC emacs-lisp
      (setq-default auto-fill-function 'do-auto-fill)
-     (set-fill-column 100)
+     (set-fill-column 80)
      (add-hook 'prog-mode '(lambda () (interactive)
                              (setq-local
                               comment-auto-fill-only-comments t)))
@@ -307,6 +308,10 @@ a handy package.
      ;; note that this is a bit more 'nice' when working in a repo, so
      ;; kinda misses the point but still useful nonetheless.
      ;; (setq auto-indent-on-visit-file t)
+
+     (packages-require 'aggressive-indent)
+     (add-hook 'prog-mode-hook (lambda () (aggressive-indent-mode)))
+     (add-hook 'org-mode-hook (lambda () (aggressive-indent-mode)))
    #+END_SRC
 ** Custom yank function
    This yank function accepts a prefix arg, to say how many times to
@@ -323,7 +328,7 @@ a handy package.
 Set the mode line to smart mode line. Should be pretty good.
 #+BEGIN_SRC emacs-lisp
   (packages-require 'smart-mode-line)
-;;  (setq sml/theme 'dark)
+  ;;(setq sml/theme 'dark)
   (sml/setup)
 #+END_SRC
 ** Ace jump
@@ -365,6 +370,7 @@ Set the mode line to smart mode line. Should be pretty good.
 Sometimes compilation can be a bit annoying. So to fix this, here is
 a handy function that compiles using the same makefile that was used
 last time!
+
 #+BEGIN_SRC emacs-lisp
   (global-set-key [(f1)] 'compile-again)
 
@@ -476,7 +482,7 @@ are at.
 #+BEGIN_SRC emacs-lisp
   (packages-require 'rainbow-delimiters)
   (require 'rainbow-delimiters)
-  (rainbow-delimiters-mode)
+  (global-rainbow-delimiters-mode)
 #+END_SRC
 
 ** God-mode
