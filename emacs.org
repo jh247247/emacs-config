@@ -284,13 +284,20 @@
     #+END_SRC
 
 *** Auto-complete
-Since org mode isn't in the ac-sources by default, let's add it with
-a handy package.
-#+BEGIN_SRC emacs-lisp
+    Since org mode isn't in the ac-sources by default, let's add it with
+    a handy package.
+    #+BEGIN_SRC emacs-lisp
   (packages-require 'org-ac)
   (require 'org-ac)
   (org-ac/config-default)
-#+END_SRC
+    #+END_SRC
+
+*** Auto Capitalize
+    Because one of the main reasons I have emacs is to make me even
+    more lazy.
+    #+begin_src emacs-lisp
+      (add-hook 'org-mode-hook #'auto-capitalize-mode)
+    #+end_src
 ** Indenting
    #+BEGIN_SRC emacs-lisp
      (defun iwb ()
