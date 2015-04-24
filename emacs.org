@@ -44,8 +44,8 @@
 #+end_src
 
 ** Theme
-   The theme that I use, nice for
-#+begin_src emacs-lisp
+   The theme that I use, nice for high contrast stuff.
+   #+begin_src emacs-lisp
   (packages-require 'grandshell-theme)
   (load-theme 'grandshell t)
 #+end_src
@@ -61,6 +61,7 @@
    #+BEGIN_SRC emacs-lisp
      (packages-require 'magit)
      (setq magit-last-seen-setup-instructions "1.4.0")
+     (global-set-key (kbd "C-x g") 'magit-status)
    #+END_SRC
 
 ** smex
