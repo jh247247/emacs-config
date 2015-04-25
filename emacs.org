@@ -546,9 +546,39 @@ can't be bothered scripting.
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 #+END_SRC
+
+** iedit
+   =iedit= mode edits all occurrences of a variable. Can be applied to
+   any language so that is pretty cool.
+
+   #+begin_src emacs-lisp
+     (packages-require 'iedit)
+     (require 'iedit)
+
+
+     (defun iedit-dwim (arg)
+       "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
+       (interactive "P")
+       (if arg
+           (iedit-mode)
+         (save-excursion
+           (save-restriction
+             (widen)
+             ;; this function determines the scope of `iedit-start'.
+             (if iedit-mode
+                 (iedit-done)
+               ;; `current-word' can of course be replaced by other
+               ;; functions.
+               (narrow-to-defun)
+               (iedit-start (current-word) (point-min) (point-max)))))))
+
+
+
+     (global-set-key (kbd "C-;") 'iedit-dwim)
+   #+end_src
 * Android workarounds
-I like to keep my stuff consistent across every system. Since
-android+ssh does some funny stuff I have to compensate.
+  I like to keep my stuff consistent across every system. Since
+  android+ssh does some funny stuff I have to compensate.
 ** Marking
 In android, =Ctrl+SPC= does not actually go through since it is +eaten
 by some language switching keybinding or something.+ actually an error
