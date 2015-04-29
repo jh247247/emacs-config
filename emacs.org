@@ -204,7 +204,9 @@
      (global-auto-complete-mode t)
      (setq ac-auto-start 3)
      (setq ac-dwim t)
-     (set-default 'ac-sources '(ac-source-yasnippet ac-source-dabbrev))
+     (setq ac-use-fuzzy t)
+
+     (set-default 'ac-sources '(ac-source-yasnippet ac-source-dabbrev ac-source-semantic))
 
      (add-to-list 'ac-modes 'latex-mode)
      (add-to-list 'ac-modes 'org-mode)
@@ -539,43 +541,15 @@ same time. Pretty handy for things that need to be changed and you
 can't be bothered scripting.
 
 #+BEGIN_SRC emacs-lisp
-(packages-require 'multiple-cursors)
-(require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  (packages-require 'multiple-cursors)
+  (require 'multiple-cursors)
+
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  (global-set-key (kbd "C-;") 'mc/mark-all-symbols-like-this-in-defun)
 #+END_SRC
-
-** iedit
-   =iedit= mode edits all occurrences of a variable. Can be applied to
-   any language so that is pretty cool.
-
-   #+begin_src emacs-lisp
-     (packages-require 'iedit)
-     (require 'iedit)
-
-
-     (defun iedit-dwim (arg)
-       "Starts iedit but uses \\[narrow-to-defun] to limit its scope."
-       (interactive "P")
-       (if arg
-           (iedit-mode)
-         (save-excursion
-           (save-restriction
-             (widen)
-             ;; this function determines the scope of `iedit-start'.
-             (if iedit-mode
-                 (iedit-done)
-               ;; `current-word' can of course be replaced by other
-               ;; functions.
-               (narrow-to-defun)
-               (iedit-start (current-word) (point-min) (point-max)))))))
-
-
-
-     (global-set-key (kbd "C-;") 'iedit-dwim)
-   #+end_src
 
 ** subword-mode
    =subword-mode= is useful for changing functions, since they are
