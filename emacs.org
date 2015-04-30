@@ -264,6 +264,7 @@
        'org-babel-load-languages
        '((latex . t)
          (plantuml . t)
+         (sh . t)
          (octave . t)))
 
       ;; fontify code in code blocks
