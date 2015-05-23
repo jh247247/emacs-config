@@ -61,7 +61,7 @@
    #+BEGIN_SRC emacs-lisp
      (packages-require 'magit)
      (setq magit-last-seen-setup-instructions "1.4.0")
-     (global-set-key (kbd "C-x g") 'magit-status)
+     (global-set-key (kbd "<f7>") 'magit-status)
    #+END_SRC
 
 ** smex
@@ -375,7 +375,9 @@ Set the mode line to smart mode line. Should be pretty good.
    lifesaver when writing makefiles and other files that require no
    extra whitespace.
    #+BEGIN_SRC emacs-lisp
-     (add-hook 'before-save-hook 'delete-trailing-whitespace)
+     (packages-require 'ws-butler)
+     (add-hook 'prog-mode-hook 'ws-butler-mode)
+     (setq-default show-trailing-whitespace t)
    #+END_SRC
 ** Compilation
 Sometimes compilation can be a bit annoying. So to fix this, here is
@@ -383,7 +385,8 @@ a handy function that compiles using the same makefile that was used
 last time!
 
 #+BEGIN_SRC emacs-lisp
-  (global-set-key [(f1)] 'compile-again)
+  (global-set-key [(f5)] 'compile-again)
+  (global-set-key [(f6)] 'next-error)
 
   (setq compilation-last-buffer nil)
   (defun compile-again (pfx)
@@ -564,9 +567,13 @@ can't be bothered scripting.
    Flycheck allows for syntax checking. Remember to install the
    external programs!
    #+begin_src emacs-lisp
-     (packages-require 'flycheck 'flycheck-tip)
+     (packages-require 'flycheck 'flycheck-pos-tip)
      (add-hook 'after-init-hook #'global-flycheck-mode)
-     (flycheck-tip-use-timer 'verbose)
+
+     ;; show errors in a popup
+     (eval-after-load 'flycheck
+       '(custom-set-variables
+         '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
    #+end_src
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
