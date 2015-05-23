@@ -8,23 +8,23 @@
 
   ;; add extra sources to the package archives
   (setq package-archives
-        '(("melpa" . "http://melpa.milkbox.net/packages/")
+        '(("gnu" . "http://elpa.gnu.org/packages/")
+          ("melpa" . "http://melpa.milkbox.net/packages/")
           ("org". "http://orgmode.org/elpa/")
           ("marmalade" . "http://marmalade-repo.org/packages/")))
-
 
   ;; activate all the packages
   (package-initialize)
 
-  ; fetch the list of packages available
+                                          ; fetch the list of packages available
   (unless package-archive-contents
     (package-refresh-contents))
 
   ;; function to install a given list of packages.
-  (defun packages-require (&rest package-list)
-    (dolist (package package-list)
-      (unless (package-installed-p package)
-        (package-install package)))
+  (defun packages-require (&rest pl)
+    (dolist (p pl)
+      (unless (package-installed-p p)
+        (package-install p)))
     (package-initialize)
     (delete-other-windows))
 
@@ -404,7 +404,7 @@ last time!
   ;; require winner mode for the auto closing of the compilation buffer.
   (winner-mode 1)
 
-  (setq compilation-finish-functions 'compile-autoclose)
+  ;;(setq compilation-finish-functions 'compile-autoclose)
   ;; Close the compilation window if there was no error at all.
   (defun compile-autoclose (buffer string)
     (cond ((string-match "finished" string)
@@ -558,6 +558,15 @@ can't be bothered scripting.
    function.
    #+begin_src emacs-lisp
      (add-hook 'prog-mode 'subword-mode)
+   #+end_src
+
+** flycheck
+   Flycheck allows for syntax checking. Remember to install the
+   external programs!
+   #+begin_src emacs-lisp
+     (packages-require 'flycheck 'flycheck-tip)
+     (add-hook 'after-init-hook #'global-flycheck-mode)
+     (flycheck-tip-use-timer 'verbose)
    #+end_src
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
