@@ -575,6 +575,35 @@ can't be bothered scripting.
        '(custom-set-variables
          '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
    #+end_src
+
+** CEDET
+   Awesome C/C++ completion.
+   #+begin_src emacs-lisp
+
+     (require 'semantic)
+     (require 'semantic/bovine/gcc)
+     (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
+     (add-to-list 'semantic-default-submodes
+                  'global-semantic-idle-local-symbol-highlight-mode)
+     (add-to-list 'semantic-default-submodes
+                  'global-semantic-idle-scheduler-mode)
+     (add-to-list 'semantic-default-submodes
+                  'global-semantic-idle-summary-mode)
+
+
+     ;; Semantic
+     (global-semantic-idle-scheduler-mode)
+     (global-semantic-idle-completions-mode)
+     (global-semantic-decoration-mode)
+     (global-semantic-highlight-func-mode)
+     (global-semantic-show-unmatched-syntax-mode)
+     (setq semantic-load-turn-useful-things-on t)
+     (setq global-semantic-idle-local-symbol-highlight-mode t)
+
+     (semantic-mode 1)
+     (global-ede-mode t)
+     (ede-enable-generic-projects)
+   #+end_src
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
   android+ssh does some funny stuff I have to compensate.
