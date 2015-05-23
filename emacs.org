@@ -376,7 +376,7 @@ Set the mode line to smart mode line. Should be pretty good.
    extra whitespace.
    #+BEGIN_SRC emacs-lisp
      (packages-require 'ws-butler)
-     (add-hook 'prog-mode-hook 'ws-butler-mode)
+     (ws-butler-global-mode)
      (setq-default show-trailing-whitespace t)
    #+END_SRC
 ** Compilation
