@@ -56,6 +56,20 @@
    (set-face-background 'default "color-16"))
 #+end_src
 * Extensions
+** Unset ctrl-z
+   This was just plain annoying.
+   #+begin_src emacs-lisp
+     (global-unset-key (kbd "C-z"))
+
+     (global-set-key (kbd "C-z C-z") 'my-suspend-frame)
+
+     (defun my-suspend-frame ()
+       "In a GUI environment, do nothing; otherwise `suspend-frame'."
+       (interactive)
+       (if (display-graphic-p)
+           (message "suspend-frame disabled for graphical displays.")
+         (suspend-frame)))
+   #+end_src
 ** Magit
    This mode allows for interaction with git from within emacs.
    #+BEGIN_SRC emacs-lisp
@@ -265,6 +279,7 @@
        '((latex . t)
          (plantuml . t)
          (sh . t)
+         (perl . t)
          (octave . t)))
 
       ;; fontify code in code blocks
@@ -603,6 +618,17 @@ can't be bothered scripting.
      (semantic-mode 1)
      (global-ede-mode t)
      (ede-enable-generic-projects)
+   #+end_src
+** Highlight changes to buffer before save
+   Like this section says, I want to have the text different until a
+   save. So then the user remembers to save and not be a dingus.
+   #+begin_src emacs-lisp
+
+     ;; (global-highlight-changes-mode t)
+
+     ;; (add-hook 'after-save-hook ((lambda () (interactive)
+     ;;                               (highlight-changes-mode 0)
+     ;;                               (highlight-changes-mode 1))))
    #+end_src
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
