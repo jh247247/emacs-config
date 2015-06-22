@@ -3,7 +3,7 @@
   =packages-require= will be downloaded and installed.
   e.g: =(packages-require 'magit)=
 
-#+begin_src emacs-lisp
+  #+begin_src emacs-lisp
   (require 'package)
 
   ;; add extra sources to the package archives
@@ -437,15 +437,24 @@ region that is selected. (word --> sentence --> paragraph etc)
   (packages-require 'expand-region)
   (global-set-key (kbd "C-=") 'er/expand-region)
 #+END_SRC
-** Hungry delete mode
-This "eats" all the whitespace before the cursor (or in front, if so
-desired).
+** shrink-whitespace
+   This shrinks the whitespace around the cursor to a single line when
+   backspace is pressed.
 
-#+BEGIN_SRC emacs-lisp
-(packages-require 'hungry-delete)
-(require 'hungry-delete)
-(global-hungry-delete-mode)
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (packages-require 'shrink-whitespace)
+     (require 'shrink-whitespace)
+     ;;(global-set-key (kbd "M-\\") 'shrink-whitespace)
+     (global-set-key [backspace]
+                     (lambda ()
+                       (interactive)
+                       (if (or (string-match "[\s-]" (char-to-string
+                                                      (preceding-char)))
+                               (bolp))
+                           (call-interactively 'shrink-whitespace)
+                         (call-interactively 'backward-delete-char-untabify))))
+
+   #+END_SRC
 
 ** Perfect auto correct?
 Adds some stuff to correct mistakes and save them so if you make the
