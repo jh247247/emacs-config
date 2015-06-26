@@ -478,7 +478,7 @@ region that is selected. (word --> sentence --> paragraph etc)
      (global-set-key [backspace]
                      (lambda ()
                        (interactive)
-                       (if (or (string-match "[\s-]" (char-to-string
+                       (if (or (string-match "[\s]" (char-to-string
                                                       (preceding-char)))
                                (bolp))
                            (call-interactively 'shrink-whitespace)
@@ -619,9 +619,14 @@ can't be bothered scripting.
    Awesome C/C++ completion.
    #+begin_src emacs-lisp
 
+     ;; Load CEDET.
+     ;; See cedet/common/cedet.info for configuration details.
+     ;; IMPORTANT: Tou must place this *before* any CEDET component
+     ;; gets activated by another package (Gnus, auth-source, ...).
+     (load-file ".emacs.d/cedet/cedet-devel-load.el")
+
      (require 'semantic)
      (require 'semantic/bovine/gcc)
-
      (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
      (add-to-list 'semantic-default-submodes
                   'global-semantic-idle-local-symbol-highlight-mode)
@@ -636,13 +641,17 @@ can't be bothered scripting.
      (global-semantic-idle-completions-mode)
      (global-semantic-decoration-mode)
      (global-semantic-highlight-func-mode)
-     (global-semantic-show-unmatched-syntax-mode)
+     ;;(global-semantic-show-unmatched-syntax-mode)
      (setq semantic-load-turn-useful-things-on t)
      (setq global-semantic-idle-local-symbol-highlight-mode t)
 
      (semantic-mode 1)
      (global-ede-mode t)
      (ede-enable-generic-projects)
+
+     (require 'semantic/db-javap)
+     (require 'cedet-android)
+
 
    #+end_src
 ** java stuff
