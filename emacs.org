@@ -29,12 +29,12 @@
     (delete-other-windows))
 
 
-#+end_src
+  #+end_src
 
 * Appearance
   These lines of code disable most of the gui elements used in emacs
   so you can get so much more of that sweet, sweet text on your screen.
-#+begin_src emacs-lisp
+  #+begin_src emacs-lisp
   (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
   (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
   (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -400,8 +400,16 @@ a handy function that compiles using the same makefile that was used
 last time!
 
 #+BEGIN_SRC emacs-lisp
-  (global-set-key [(f5)] 'compile-again)
-  (global-set-key [(f6)] 'next-error)
+  (defun desperately-compile ()
+    "Traveling up the path, find a Makefile and `compile'."
+    (interactive)
+    (when (locate-dominating-file default-directory "Makefile")
+      (with-temp-buffer
+        (cd (locate-dominating-file default-directory "Makefile"))
+        (compile "make -k"))))
+
+  ;; call compile again if it has already been called, otherwise find
+  ;; the makefile in a parent directory and compile using that.
 
   (setq compilation-last-buffer nil)
   (defun compile-again (pfx)
@@ -411,7 +419,14 @@ last time!
         (progn
           (set-buffer compilation-last-buffer)
           (revert-buffer t t))
-      (call-interactively 'compile)))
+      (desperately-compile)))
+
+
+
+
+  (global-set-key [(f5)] 'compile-again)
+  (global-set-key [(f6)] 'next-error)
+
 
   ;; some compilation stuff so that it scrolls to the first error when
   ;; it happens
@@ -606,6 +621,7 @@ can't be bothered scripting.
 
      (require 'semantic)
      (require 'semantic/bovine/gcc)
+
      (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
      (add-to-list 'semantic-default-submodes
                   'global-semantic-idle-local-symbol-highlight-mode)
@@ -627,17 +643,24 @@ can't be bothered scripting.
      (semantic-mode 1)
      (global-ede-mode t)
      (ede-enable-generic-projects)
+
    #+end_src
 ** Highlight changes to buffer before save
    Like this section says, I want to have the text different until a
    save. So then the user remembers to save and not be a dingus.
    #+begin_src emacs-lisp
 
-     ;; (global-highlight-changes-mode t)
+     (global-highlight-changes-mode t)
 
-     ;; (add-hook 'after-save-hook ((lambda () (interactive)
-     ;;                               (highlight-changes-mode 0)
-     ;;                               (highlight-changes-mode 1))))
+     (add-hook 'after-save-hook ((lambda () (interactive)
+                                   (highlight-changes-mode 0)
+                                   (highlight-changes-mode 1))))
+   #+end_src
+** java stuff
+   I need to actually do android dev stuff, so here are some things to
+   hopefully make my life easier.
+   #+begin_src emacs-lisp
+
    #+end_src
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
