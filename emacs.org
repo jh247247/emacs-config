@@ -253,7 +253,7 @@
    for input in a thin terminal (like my phone)
    #+BEGIN_SRC emacs-lisp
      (setq-default auto-fill-function 'do-auto-fill)
-     (set-fill-column 80)
+     (set-fill-column 120)
      (add-hook 'prog-mode '(lambda () (interactive)
                              (setq-local
                               comment-auto-fill-only-comments t)))
@@ -728,6 +728,14 @@ can't be bothered scripting.
                                                 'hs-toggle-hiding)
                                  (hs-minor-mode)
                                  (hs-hide-all-comments)))
+   #+end_src
+
+** Find In Project
+   Finding a file in a project can be cumbersome sometimes. This will
+   hopefully fix it.
+   #+begin_src emacs-lisp
+     (packages-require 'fiplr)
+     (global-set-key (kbd "C-x f") 'fiplr-find-file)
    #+end_src
 ** java stuff
    I need to actually do android dev stuff, so here are some things to
