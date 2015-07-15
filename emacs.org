@@ -474,18 +474,14 @@ region that is selected. (word --> sentence --> paragraph etc)
    #+BEGIN_SRC emacs-lisp
      (packages-require 'shrink-whitespace)
      (require 'shrink-whitespace)
-     ;;(global-set-key (kbd "M-\\") 'shrink-whitespace)
-     (global-set-key [backspace]
-                     (lambda ()
-                       (interactive)
-                       (if (or (string-match "[\s]" (char-to-string
-                                                      (preceding-char)))
-                               (bolp))
-                           (call-interactively 'shrink-whitespace)
-                         (call-interactively 'backward-delete-char-untabify))))
-
+     (global-set-key (kbd "M-\\") 'shrink-whitespace)
    #+END_SRC
-
+** Hungry delete
+   #+begin_src emacs-lisp
+     (packages-require 'hungry-delete-mode)
+     (require 'hungry-delete)
+     (global-hungry-delete-mode)
+   #+end_src
 ** Perfect auto correct?
 Adds some stuff to correct mistakes and save them so if you make the
 same mistake it will automatically change it to the correct spelling.
