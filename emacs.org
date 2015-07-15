@@ -478,7 +478,7 @@ region that is selected. (word --> sentence --> paragraph etc)
    #+END_SRC
 ** Hungry delete
    #+begin_src emacs-lisp
-     (packages-require 'hungry-delete-mode)
+     (packages-require 'hungry-delete)
      (require 'hungry-delete)
      (global-hungry-delete-mode)
    #+end_src
@@ -738,6 +738,17 @@ can't be bothered scripting.
    hopefully make my life easier.
    #+begin_src emacs-lisp
 
+   #+end_src
+** Deft
+   Deft allows for quick note taking, for writing down thoughts. Since
+   typing is faster than writing most of the time.
+   #+begin_src emacs-lisp
+     (packages-require 'deft)
+     (global-set-key (kbd "<f8>") 'deft)
+     (setq deft-extensions '("txt" "tex" "org"))
+     (setq deft-recursive t)
+     (setq deft-use-filename-as-title t)
+     (setq deft-extension "org")
    #+end_src
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
