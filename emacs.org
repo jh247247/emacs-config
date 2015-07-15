@@ -733,11 +733,24 @@ can't be bothered scripting.
      (packages-require 'fiplr)
      (global-set-key (kbd "C-x f") 'fiplr-find-file)
    #+end_src
+
+** Gradle
+   There is no syntax highlighting in gradle by default, this fixes
+   that.
+   #+begin_src emacs-lisp
+     (packages-require 'groovy-mode)
+     ;; Gradle files should use Groovy Mode
+     (add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode))
+
+   #+end_src
 ** java stuff
    I need to actually do android dev stuff, so here are some things to
    hopefully make my life easier.
    #+begin_src emacs-lisp
 
+
+     (add-hook 'java-mode-hook (lambda ()
+                                 (cedet-android-sdk-update-classpath)))
    #+end_src
 ** Deft
    Deft allows for quick note taking, for writing down thoughts. Since
