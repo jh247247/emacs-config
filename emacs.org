@@ -1,3 +1,4 @@
+
 * Automatic package installation
   This function makes it so that any package called with
   =packages-require= will be downloaded and installed.
@@ -615,39 +616,44 @@ can't be bothered scripting.
    Awesome C/C++ completion.
    #+begin_src emacs-lisp
 
-     ;; Load CEDET.
-     ;; See cedet/common/cedet.info for configuration details.
-     ;; IMPORTANT: Tou must place this *before* any CEDET component
-     ;; gets activated by another package (Gnus, auth-source, ...).
-     (load-file ".emacs.d/cedet/cedet-devel-load.el")
-     (load-file ".emacs.d/cedet/contrib/cedet-contrib-load.el")
+     (if (file-exists-p "~/.emacs.d/cedet/cedet-devel-load.el")
+         (lambda ()
+           ;; Load CEDET.
+           ;; See cedet/common/cedet.info for configuration details.
+           ;; IMPORTANT: Tou must place this *before* any CEDET component
+           ;; gets activated by another package (Gnus, auth-source, ...).
+           (load-file "~/.emacs.d/cedet/cedet-devel-load.el")
+           (load-file "~/.emacs.d/cedet/contrib/cedet-contrib-load.el")
 
-     (require 'semantic)
-     (require 'semantic/bovine/gcc)
-     (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
-     (add-to-list 'semantic-default-submodes
-                  'global-semantic-idle-local-symbol-highlight-mode)
-     (add-to-list 'semantic-default-submodes
-                  'global-semantic-idle-scheduler-mode)
-     (add-to-list 'semantic-default-submodes
-                  'global-semantic-idle-summary-mode)
+           (require 'semantic)
+           (require 'semantic/bovine/gcc)
+           (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
+           (add-to-list 'semantic-default-submodes
+                        'global-semantic-idle-local-symbol-highlight-mode)
+           (add-to-list 'semantic-default-submodes
+                        'global-semantic-idle-scheduler-mode)
+           (add-to-list 'semantic-default-submodes
+                        'global-semantic-idle-summary-mode)
 
 
-     ;; Semantic
-     (global-semantic-idle-scheduler-mode)
-     (global-semantic-idle-completions-mode)
-     (global-semantic-decoration-mode)
-     (global-semantic-highlight-func-mode)
-     ;;(global-semantic-show-unmatched-syntax-mode)
-     (setq semantic-load-turn-useful-things-on t)
-     (setq global-semantic-idle-local-symbol-highlight-mode t)
+           ;; Semantic
+           (global-semantic-idle-scheduler-mode)
+           (global-semantic-idle-completions-mode)
+           (global-semantic-decoration-mode)
+           (global-semantic-highlight-func-mode)
+           ;;(global-semantic-show-unmatched-syntax-mode)
+           (setq semantic-load-turn-useful-things-on t)
+           (setq global-semantic-idle-local-symbol-highlight-mode t)
 
-     (semantic-mode 1)
-     (global-ede-mode t)
-     (ede-enable-generic-projects)
+           (semantic-mode 1)
+           (global-ede-mode t)
+           (ede-enable-generic-projects)
 
-     (require 'semantic/db-javap)
-     (require 'cedet-android)
+           (require 'semantic/db-javap)
+           (require 'cedet-android))
+       (lambda ()
+         (message "Remember to install CEDET!")
+         ))
 
    #+end_src
 
