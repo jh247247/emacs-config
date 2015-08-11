@@ -769,6 +769,34 @@ can't be bothered scripting.
      (setq deft-use-filename-as-title t)
      (setq deft-extension "org")
    #+end_src
+** Processing
+   #+begin_src emacs-lisp
+     (packages-require 'processing-mode 'processing-snippets)
+     (setq processing-location "/opt/processing/processing-3.0b2/processing-java")
+     (setq processing-application-dir "/opt/processing/processing-3.0b2/processing-java")
+     (setq processing-sketchbook-dir "~/processing")
+     (setq processing-output-dir "/tmp")
+
+     (defun processing-mode-init ()
+       (make-local-variable 'ac-sources)
+       (setq ac-sources '(ac-source-dictionary ac-source-yasnippet))
+       (make-local-variable 'ac-user-dictionary)
+       (setq ac-user-dictionary (append processing-functions
+                                        processing-builtins
+                                        processing-constants)))
+
+     (add-to-list 'ac-modes 'processing-mode)
+     (add-hook 'processing-mode-hook 'processing-mode-init)
+
+
+
+
+
+
+
+
+
+   #+end_src
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
   android+ssh does some funny stuff I have to compensate.
