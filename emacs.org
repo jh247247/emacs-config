@@ -42,7 +42,7 @@
   (setq inhibit-splash-screen t)
   (setq initial-scratch-message "")
   (setq inhibit-startup-message t)
-#+end_src
+  #+end_src
 
 ** Theme
    The theme that I use, nice for high contrast stuff.
@@ -52,10 +52,10 @@
 #+end_src
    Note that there is a small bug when using xterm-256color, where black is not really black.
    Hopefully this fixes it.
-#+begin_src emacs-lisp
+   #+begin_src emacs-lisp
   (if window-system nil
    (set-face-background 'default "color-16"))
-#+end_src
+   #+end_src
 * Extensions
 ** Unset ctrl-z
    This was just plain annoying.
@@ -272,7 +272,7 @@
 *** Babel languages
     Extend the org language by allowing code to be executed as the org
     file is compiled.
-
+    
     #+BEGIN_SRC emacs-lisp
       ;; active Org-babel languages
       (org-babel-do-load-languages
@@ -318,6 +318,29 @@
     #+begin_src emacs-lisp
       (add-hook 'org-mode-hook #'auto-capitalize-mode)
     #+end_src
+    
+*** References
+    Need some reference handling for org mode.
+    #+begin_src emacs-lisp
+      (defun org-mode-reftex-setup ()
+      (load-library "reftex")
+      (and (buffer-file-name)
+      (file-exists-p (buffer-file-name))
+      (reftex-parse-all))
+      (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+      )
+      (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+    #+end_src
+
+*** Screenshot
+    #+begin_src emacs-lisp
+      (require 'org-screenshot)
+      (add-hook 'org-mode-hook
+                (lambda ()
+                  (local-set-key (kbd "\M-s \M-s") 'org-screenshot)))
+
+    #+end_src
+
 ** Indenting
    #+BEGIN_SRC emacs-lisp
      (defun iwb ()
@@ -349,12 +372,12 @@
      (define-key global-map (kbd "C-x C-y") 'yank-repeat)
    #+END_SRC
 ** Smart mode line
-Set the mode line to smart mode line. Should be pretty good.
-#+BEGIN_SRC emacs-lisp
+   Set the mode line to smart mode line. Should be pretty good.
+   #+BEGIN_SRC emacs-lisp
   (packages-require 'smart-mode-line)
   ;;(setq sml/theme 'dark)
   (sml/setup)
-#+END_SRC
+   #+END_SRC
 ** Ace jump
    #+BEGIN_SRC emacs-lisp
      (packages-require 'ace-jump-mode)
@@ -393,11 +416,11 @@ Set the mode line to smart mode line. Should be pretty good.
      ;;(setq-default show-trailing-whitespace t)
    #+END_SRC
 ** Compilation
-Sometimes compilation can be a bit annoying. So to fix this, here is
-a handy function that compiles using the same makefile that was used
-last time!
+   Sometimes compilation can be a bit annoying. So to fix this, here is
+   a handy function that compiles using the same makefile that was used
+   last time!
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (defun desperately-compile ()
     "Traveling up the path, find a Makefile and `compile'."
     (interactive)
@@ -429,9 +452,9 @@ last time!
   ;; some compilation stuff so that it scrolls to the first error when
   ;; it happens
   (setq compilation-scroll-output 'first-error)
-#+END_SRC
+   #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   ;; require winner mode for the auto closing of the compilation buffer.
   (winner-mode 1)
 
@@ -444,27 +467,27 @@ last time!
            (message "Build successful."))
           (t
            (message "Compilation exited abnormally: %s" string))))
-#+END_SRC
+   #+END_SRC
 ** Spelling
-I like to have spelling for emacs (for org mode and others anyway)
-very useful for notes.
-#+BEGIN_SRC emacs-lisp
+   I like to have spelling for emacs (for org mode and others anyway)
+   very useful for notes.
+   #+BEGIN_SRC emacs-lisp
   (dolist (hook '(org-mode-hook text-mode latex-mode))
     (add-hook hook (lambda () (flyspell-mode 1))))
-#+END_SRC
-Also something that is cool, auto-capitalization.
-Does what it says on the tin.
-#+BEGIN_SRC emacs-lisp
+   #+END_SRC
+   Also something that is cool, auto-capitalization.
+   Does what it says on the tin.
+   #+BEGIN_SRC emacs-lisp
   (packages-require 'auto-capitalize)
   (require 'auto-capitalize)
-#+END_SRC
+   #+END_SRC
 ** Expand-region
-Expand region does some cool stuff, repeating the command expands the
-region that is selected. (word --> sentence --> paragraph etc)
-#+BEGIN_SRC emacs-lisp
+   Expand region does some cool stuff, repeating the command expands the
+   region that is selected. (word --> sentence --> paragraph etc)
+   #+BEGIN_SRC emacs-lisp
   (packages-require 'expand-region)
   (global-set-key (kbd "C-=") 'er/expand-region)
-#+END_SRC
+   #+END_SRC
 ** shrink-whitespace
    This shrinks the whitespace around the cursor to a single line when
    backspace is pressed.
@@ -481,11 +504,11 @@ region that is selected. (word --> sentence --> paragraph etc)
      (global-hungry-delete-mode)
    #+end_src
 ** Perfect auto correct?
-Adds some stuff to correct mistakes and save them so if you make the
-same mistake it will automatically change it to the correct spelling.
+   Adds some stuff to correct mistakes and save them so if you make the
+   same mistake it will automatically change it to the correct spelling.
 
-Blatantly stolen from endlessparenthesis.com
-#+BEGIN_SRC emacs-lisp
+   Blatantly stolen from endlessparenthesis.com
+   #+BEGIN_SRC emacs-lisp
 (define-key ctl-x-map "\C-i" 'endless/ispell-word-then-abbrev)
 
 (defun endless/ispell-word-then-abbrev (p)
@@ -504,40 +527,40 @@ With prefix P, create local abbrev. Otherwise it will be global."
 
 (setq save-abbrevs t)
 (setq-default abbrev-mode t)
-#+END_SRC
+   #+END_SRC
 ** File extension association
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
-#+END_SRC
+   #+END_SRC
 
 ** rectangle copy/paste
-Sometimes I need to copy/paste a rectangular section of text. This
-helps.
-#+BEGIN_SRC emacs-lisp
+   Sometimes I need to copy/paste a rectangular section of text. This
+   helps.
+   #+BEGIN_SRC emacs-lisp
   (packages-require 'rect-mark)
   (require 'rect-mark)
   (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
   (global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
   (global-set-key (kbd "C-x r C-w")   'rm-kill-region)
   (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
-#+END_SRC
+   #+END_SRC
 
 ** Rainbow delimiters
-Add some color to the delimiters so that you can see what depth you
-are at.
-#+BEGIN_SRC emacs-lisp
+   Add some color to the delimiters so that you can see what depth you
+   are at.
+   #+BEGIN_SRC emacs-lisp
   (packages-require 'rainbow-delimiters)
   (require 'rainbow-delimiters)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'org-mode-hook #'rainbow-delimiters-mode)
-#+END_SRC
+   #+END_SRC
 
 ** God-mode
-God mode is a mode that changes the command so that it does not
-require pressing the control key. It's as if the control key is
-pressed all the time!
-#+BEGIN_SRC emacs-lisp
+   God mode is a mode that changes the command so that it does not
+   require pressing the control key. It's as if the control key is
+   pressed all the time!
+   #+BEGIN_SRC emacs-lisp
   (packages-require 'god-mode)
   (require 'god-mode)
 
@@ -545,13 +568,13 @@ pressed all the time!
   (if (eq window-system 'nil)  (global-set-key [(f2)] 'god-mode-all))
   (global-set-key (kbd "<escape>") 'god-mode-all)
 
-#+END_SRC
+   #+END_SRC
 
 ** EasyPG
-I want to be able to encrypt some files. This is the way I want to do
-it.
+   I want to be able to encrypt some files. This is the way I want to do
+   it.
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (packages-require 'epa)
   (require 'epa)
   (when (require 'epa-file nil 'noerror)
@@ -570,14 +593,14 @@ it.
     ;; Note: another form is:
     ;;(setenv (concat "GPG_AGENT_INFO" nil))
     )
-#+END_SRC
+   #+END_SRC
 
 ** Multiple cursors
-This adds many cursors to emacs, so you can edit many lines at the
-same time. Pretty handy for things that need to be changed and you
-can't be bothered scripting.
+   This adds many cursors to emacs, so you can edit many lines at the
+   same time. Pretty handy for things that need to be changed and you
+   can't be bothered scripting.
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (packages-require 'multiple-cursors)
   (require 'multiple-cursors)
 
@@ -586,7 +609,7 @@ can't be bothered scripting.
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
   (global-set-key (kbd "C-;") 'mc/mark-all-symbols-like-this-in-defun)
-#+END_SRC
+   #+END_SRC
 
 ** subword-mode
    =subword-mode= is useful for changing functions, since they are
