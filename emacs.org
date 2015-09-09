@@ -336,9 +336,6 @@
      ;; kinda misses the point but still useful nonetheless.
      ;; (setq auto-indent-on-visit-file t)
 
-     (packages-require 'aggressive-indent)
-     (add-hook 'prog-mode-hook (lambda () (aggressive-indent-mode)))
-     (add-hook 'org-mode-hook (lambda () (aggressive-indent-mode)))
    #+END_SRC
 ** Custom yank function
    This yank function accepts a prefix arg, to say how many times to
