@@ -334,6 +334,8 @@
 
 *** Screenshot
     #+begin_src emacs-lisp
+      (packages-require 'org-screenshot)
+
       (require 'org-screenshot)
       (add-hook 'org-mode-hook
                 (lambda ()
