@@ -1,34 +1,45 @@
 
 * Automatic package installation
-  This function makes it so that any package called with
-  =packages-require= will be downloaded and installed.
-  e.g: =(packages-require 'magit)=
-
   #+begin_src emacs-lisp
-  (require 'package)
+    (require 'package)
 
-  ;; add extra sources to the package archives
-  (setq package-archives
-        '(("gnu" . "http://elpa.gnu.org/packages/")
-          ("melpa" . "http://melpa.milkbox.net/packages/")
-          ("marmalade" . "http://marmalade-repo.org/packages/")))
-
-  ;; activate all the packages
-  (package-initialize)
-
-                                          ; fetch the list of packages available
-  (unless package-archive-contents
-    (package-refresh-contents))
-
-  ;; function to install a given list of packages.
-  (defun packages-require (&rest pl)
-    (dolist (p pl)
-      (unless (package-installed-p p)
-        (package-install p)))
     (package-initialize)
-    (delete-other-windows))
+
+    (setq package-list '(grandshell-theme ; theme
+                         magit ; git
+                         smex ido-ubiquitous
+                         yasnippet auto-complete ac-math ac-dabbrev ; autocomplete
+                         smartparens rainbow-delimiters ; paren complete
+                         ; org mode
+                         plantuml-mode org-ac org-screenshot smart-mode-line
+                         ; ws stuff
+                         ws-butler shrink-whitespace auto-capitalize
+                         hungry-delete
+                         ; selection
+                         expand-region rect-mark
+                         epa
+                         multiple-cursors
+                         flycheck flycheck-pos-tip
+                         projectile org-projectile
+                         groovy-mode
+                         deft
+                         workgroups2))
+
+    ;; add extra sources to the package archives
+    (setq package-archives
+          '(("gnu" . "http://elpa.gnu.org/packages/")
+            ("melpa" . "http://melpa.milkbox.net/packages/")
+            ("marmalade" . "http://marmalade-repo.org/packages/")))
+                                            ; fetch the list of packages available
+    (unless package-archive-contents
+      (package-refresh-contents))
 
 
+    ; install the missing packages
+    (dolist (package package-list)
+      (unless (package-installed-p package)
+        (package-install package)))
+    (package-initialize)
   #+end_src
 
 * Appearance
@@ -46,7 +57,6 @@
 ** Theme
    The theme that I use, nice for high contrast stuff.
    #+begin_src emacs-lisp
-  (packages-require 'grandshell-theme)
   (load-theme 'grandshell t)
 #+end_src
    Note that there is a small bug when using xterm-256color, where black is not really black.
@@ -74,7 +84,6 @@
 ** Magit
    This mode allows for interaction with git from within emacs.
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'magit)
      (setq magit-last-seen-setup-instructions "1.4.0")
      (global-set-key (kbd "<f7>") 'magit-status)
    #+END_SRC
@@ -83,7 +92,6 @@
    This allows for autocomplete in the minibuffer when using =M-x= as
    well as fuzzy matching.
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'smex)
 
      ;;; Smex
      (autoload 'smex "smex"
@@ -134,7 +142,6 @@
 
 ** ido
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'ido-ubiquitous)
      (ido-ubiquitous-mode 1)
 
      (require 'ido)
@@ -195,7 +202,6 @@
 
    For example expand =sysout= to =System.out.println= or something.
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'yasnippet)
      (require 'yasnippet)
      (yas-global-mode 1)
 
@@ -206,7 +212,6 @@
 ** auto-complete
    #+BEGIN_SRC emacs-lisp
      ;; auto complete stuff
-     (packages-require 'auto-complete 'ac-math 'ac-dabbrev)
 
      (require 'auto-complete-config)
      (require 'ac-math)
@@ -243,7 +248,6 @@
    #+END_SRC
 ** Parenthesis matching
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'smartparens)
      (require 'smartparens-config)
      (smartparens-global-mode)
 
@@ -296,7 +300,6 @@
     Plantuml is a pretty cool uml drawing tool that interacts with
     emacs well due to =plantuml-mode=
     #+BEGIN_SRC emacs-lisp
-    (packages-require 'plantuml-mode)
     #+END_SRC
 
     Note that it requires the path to the jar file to be set in order
@@ -310,7 +313,6 @@
     Since org mode isn't in the ac-sources by default, let's add it with
     a handy package.
     #+BEGIN_SRC emacs-lisp
-  (packages-require 'org-ac)
   (require 'org-ac)
   (org-ac/config-default)
     #+END_SRC
@@ -337,7 +339,6 @@
 
 *** Screenshot
     #+begin_src emacs-lisp
-      (packages-require 'org-screenshot)
 
       (require 'org-screenshot)
       (add-hook 'org-mode-hook
@@ -379,13 +380,11 @@
 ** Smart mode line
    Set the mode line to smart mode line. Should be pretty good.
    #+BEGIN_SRC emacs-lisp
-  (packages-require 'smart-mode-line)
   ;;(setq sml/theme 'dark)
   (sml/setup)
    #+END_SRC
 ** Ace jump
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'ace-jump-mode)
      (require 'ace-jump-mode)
      (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
      (setq ace-jump-mode-scope 'frame)
@@ -416,7 +415,6 @@
    lifesaver when writing makefiles and other files that require no
    extra whitespace.
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'ws-butler)
      (ws-butler-global-mode)
      ;;(setq-default show-trailing-whitespace t)
    #+END_SRC
@@ -483,14 +481,12 @@
    Also something that is cool, auto-capitalization.
    Does what it says on the tin.
    #+BEGIN_SRC emacs-lisp
-  (packages-require 'auto-capitalize)
   (require 'auto-capitalize)
    #+END_SRC
 ** Expand-region
    Expand region does some cool stuff, repeating the command expands the
    region that is selected. (word --> sentence --> paragraph etc)
    #+BEGIN_SRC emacs-lisp
-  (packages-require 'expand-region)
   (global-set-key (kbd "C-=") 'er/expand-region)
    #+END_SRC
 ** shrink-whitespace
@@ -498,13 +494,11 @@
    backspace is pressed.
 
    #+BEGIN_SRC emacs-lisp
-     (packages-require 'shrink-whitespace)
      (require 'shrink-whitespace)
      (global-set-key (kbd "M-\\") 'shrink-whitespace)
    #+END_SRC
 ** Hungry delete
    #+begin_src emacs-lisp
-     (packages-require 'hungry-delete)
      (require 'hungry-delete)
      (global-hungry-delete-mode)
    #+end_src
@@ -543,7 +537,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    Sometimes I need to copy/paste a rectangular section of text. This
    helps.
    #+BEGIN_SRC emacs-lisp
-  (packages-require 'rect-mark)
   (require 'rect-mark)
   (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
   (global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
@@ -555,7 +548,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    Add some color to the delimiters so that you can see what depth you
    are at.
    #+BEGIN_SRC emacs-lisp
-  (packages-require 'rainbow-delimiters)
   (require 'rainbow-delimiters)
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'org-mode-hook #'rainbow-delimiters-mode)
@@ -566,7 +558,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    require pressing the control key. It's as if the control key is
    pressed all the time!
    #+BEGIN_SRC emacs-lisp
-  (packages-require 'god-mode)
   (require 'god-mode)
 
   ;; need to set this in console mode only or something...
@@ -580,7 +571,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    it.
 
    #+BEGIN_SRC emacs-lisp
-  (packages-require 'epa)
   (require 'epa)
   (when (require 'epa-file nil 'noerror)
     (epa-file-enable)
@@ -606,7 +596,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    can't be bothered scripting.
 
    #+BEGIN_SRC emacs-lisp
-  (packages-require 'multiple-cursors)
   (require 'multiple-cursors)
 
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -628,7 +617,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    Flycheck allows for syntax checking. Remember to install the
    external programs!
    #+begin_src emacs-lisp
-     (packages-require 'flycheck 'flycheck-pos-tip)
      (add-hook 'after-init-hook #'global-flycheck-mode)
 
      ;; show errors in a popup
@@ -761,7 +749,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    Finding a file in a project can be cumbersome sometimes. This will
    hopefully fix it.
    #+begin_src emacs-lisp
-     (packages-require 'projectile 'org-projectile)
      (projectile-global-mode)
      (global-set-key (kbd "C-x f") 'projectile-find-file)
      (setq projectile-indexing-method 'native)
@@ -772,7 +759,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    There is no syntax highlighting in gradle by default, this fixes
    that.
    #+begin_src emacs-lisp
-     (packages-require 'groovy-mode)
      ;; Gradle files should use Groovy Mode
      (add-to-list 'auto-mode-alist '("\\.gradle\\'" . groovy-mode))
 
@@ -790,7 +776,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    Deft allows for quick note taking, for writing down thoughts. Since
    typing is faster than writing most of the time.
    #+begin_src emacs-lisp
-     (packages-require 'deft)
      (global-set-key (kbd "<f8>") 'deft)
      (setq deft-extensions '("txt" "tex" "org"))
      (setq deft-recursive t)
@@ -799,7 +784,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    #+end_src
 ** Processing
    #+begin_src emacs-lisp
-     (packages-require 'processing-mode 'processing-snippets)
      (setq processing-location "/opt/processing/processing-3.0b2/processing-java")
      (setq processing-application-dir "/opt/processing/processing-3.0b2/processing-java")
      (setq processing-sketchbook-dir "~/processing")
@@ -845,7 +829,6 @@ With prefix P, create local abbrev. Otherwise it will be global."
    Workgroups are like different perspectives. Have multiple projects
    open at the same time!
 #+begin_src emacs-lisp
-  (packages-require 'workgroups2)
   (setq wg-prefix-key (kbd "C-c C-c"))
   (workgroups-mode 1)
 #+end_src
