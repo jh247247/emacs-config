@@ -66,7 +66,7 @@
      (setq sublimity-map-size 20)
      (setq sublimity-map-fraction 0.3)
      (setq sublimity-map-text-scale -7)
-     (sublimity-map-set-delay 3)
+     (sublimity-map-set-delay 0)
      (sublimity-mode 1)
    #+end_src
 * Extensions
@@ -832,6 +832,14 @@ With prefix P, create local abbrev. Otherwise it will be global."
 
 
    #+end_src
+** Workgroups
+   Workgroups are like different perspectives. Have multiple projects
+   open at the same time!
+#+begin_src emacs-lisp
+  (packages-require 'workgroups2)
+  (setq wg-prefix-key (kbd "C-c C-c"))
+  (workgroups-mode 1)
+#+end_src
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
   android+ssh does some funny stuff I have to compensate.
