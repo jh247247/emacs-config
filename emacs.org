@@ -11,7 +11,6 @@
   (setq package-archives
         '(("gnu" . "http://elpa.gnu.org/packages/")
           ("melpa" . "http://melpa.milkbox.net/packages/")
-          ("org". "http://orgmode.org/elpa/")
           ("marmalade" . "http://marmalade-repo.org/packages/")))
 
   ;; activate all the packages
@@ -270,10 +269,13 @@
 ** Org mode
    This section handles interaction between emacs and the various
    extensions that org mode handles.
+#+begin_src emacs-lisp
+  (setq org-replace-disputed-keys t)
+#+end_src
 *** Babel languages
     Extend the org language by allowing code to be executed as the org
     file is compiled.
-    
+
     #+BEGIN_SRC emacs-lisp
       ;; active Org-babel languages
       (org-babel-do-load-languages
@@ -319,7 +321,7 @@
     #+begin_src emacs-lisp
       (add-hook 'org-mode-hook #'auto-capitalize-mode)
     #+end_src
-    
+
 *** References
     Need some reference handling for org mode.
     #+begin_src emacs-lisp
@@ -819,6 +821,22 @@ With prefix P, create local abbrev. Otherwise it will be global."
 
 
 
+   #+end_src
+** Windmove
+   Helps move around buffers.
+   #+begin_src emacs-lisp
+     (defun ignore-error-wrapper (fn)
+       "Funtion return new function that ignore errors.
+        The function wraps a function with `ignore-errors' macro."
+       (lexical-let ((fn fn))
+         (lambda ()
+           (interactive)
+           (ignore-errors
+             (funcall fn)))))
+     (global-set-key [s-left] (ignore-error-wrapper 'windmove-left))
+     (global-set-key [s-right] (ignore-error-wrapper 'windmove-right))
+     (global-set-key [s-up] (ignore-error-wrapper 'windmove-up))
+     (global-set-key [s-down] (ignore-error-wrapper 'windmove-down))
    #+end_src
 ** Workgroups
    Workgroups are like different perspectives. Have multiple projects
