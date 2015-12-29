@@ -56,6 +56,19 @@
   (if window-system nil
    (set-face-background 'default "color-16"))
    #+end_src
+
+** Sublimity
+   Add a minimap because it looks fancy.
+   #+begin_src emacs-lisp
+     (packages-require 'sublimity)
+     (require 'sublimity)
+     (require 'sublimity-map)
+     (setq sublimity-map-size 20)
+     (setq sublimity-map-fraction 0.3)
+     (setq sublimity-map-text-scale -7)
+     (sublimity-map-set-delay 3)
+     (sublimity-mode 1)
+   #+end_src
 * Extensions
 ** Unset ctrl-z
    This was just plain annoying.
