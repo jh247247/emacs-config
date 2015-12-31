@@ -7,8 +7,8 @@
 
     (setq package-list '(grandshell-theme ; theme
                          magit ; git
-                         smex ido-ubiquitous
-                         yasnippet auto-complete ac-math ac-dabbrev ; autocomplete
+                         smex ido-ubiquitous flx-ido
+                         auto-yasnippet yasnippet auto-complete ac-math ac-dabbrev ; autocomplete
                          smartparens rainbow-delimiters ; paren complete
                          ; org mode
                          plantuml-mode org-ac org-screenshot smart-mode-line
@@ -35,11 +35,14 @@
       (package-refresh-contents))
 
 
-    ; install the missing packages
-    (dolist (package package-list)
-      (unless (package-installed-p package)
-        (package-install package)))
+                                            ; install the missing packages
+    (defun install-packages (pl)
+      (dolist (package pl)
+        (unless (package-installed-p package)
+          (package-install package))))
+
     (package-initialize)
+    (install-packages package-list)
   #+end_src
 
 * Appearance
@@ -67,6 +70,11 @@
    #+end_src
 
 * Extensions
+
+** GC tuning
+   #+begin_src emacs-lisp
+(setq gc-cons-threshold 20000000)
+   #+end_src
 ** Unset ctrl-z
    This was just plain annoying.
    #+begin_src emacs-lisp
@@ -145,7 +153,13 @@
      (ido-ubiquitous-mode 1)
 
      (require 'ido)
+     (require 'flx-ido)
      (ido-mode t)
+     (ido-everywhere 1)
+     (flx-ido-mode 1)
+     (setq ido-enable-flex-matching t)
+     (setq ido-use-faces nil)
+
      (setq ido-enable-prefix nil
            ido-enable-flex-matching t
            ido-case-fold nil
@@ -161,8 +175,7 @@
        (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)
        (define-key ido-completion-map (kbd "<up>") 'ido-prev-match))
 
-     (add-hook
-      'ido-setup-hook
+     (add-hook 'ido-setup-hook
       (lambda ()
         ;; Go straight home
         (define-key ido-file-completion-map
@@ -192,10 +205,12 @@
              (let ((ido-ubiquitous-enable-compatibility nil))
                ad-do-it))))
 
-     ;;; save this bit for later.
+          ;;; save this bit for later.
      ;;(ido-ubiquitous-use-new-completing-read webjump 'webjump)
      ;;(ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
      ;;(ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)
+
+
    #+END_SRC
 ** Yasnippet
    Allows for expansion of abbreviations of code.
@@ -258,10 +273,15 @@
    for input in a thin terminal (like my phone)
    #+BEGIN_SRC emacs-lisp
      (setq-default auto-fill-function 'do-auto-fill)
-     (set-fill-column 120)
-     (add-hook 'prog-mode '(lambda () (interactive)
-                             (setq-local
-                              comment-auto-fill-only-comments t)))
+     (load-file "~/.emacs.d/filladapt.el")
+     (require 'filladapt)
+
+     (add-hook 'prog-mode-hook
+               (lambda () (set-fill-column 120)
+                 (setq-local comment-auto-fill-only-comments t)
+                 (filladapt-mode)))
+
+
    #+END_SRC
 
 ** Automatic save
@@ -610,7 +630,7 @@ With prefix P, create local abbrev. Otherwise it will be global."
    usually camelcase. This means that you can =C-BKSPC= words within a
    function.
    #+begin_src emacs-lisp
-     (add-hook 'prog-mode 'subword-mode)
+     (add-hook 'prog-mode-hook 'subword-mode)
    #+end_src
 
 ** flycheck
