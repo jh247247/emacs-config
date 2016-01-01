@@ -158,7 +158,7 @@
      (ido-everywhere 1)
      (flx-ido-mode 1)
      (setq ido-enable-flex-matching t)
-     (setq ido-use-faces nil)
+     (setq flx-ido-use-faces nil)
 
      (setq ido-enable-prefix nil
            ido-enable-flex-matching t
@@ -176,21 +176,21 @@
        (define-key ido-completion-map (kbd "<up>") 'ido-prev-match))
 
      (add-hook 'ido-setup-hook
-      (lambda ()
-        ;; Go straight home
-        (define-key ido-file-completion-map
-          (kbd "~")
-          (lambda ()
-            (interactive)
-            (cond
-             ((looking-back "~/") (insert "projects/"))
-             ((looking-back "/") (insert "~/"))
-             (:else (call-interactively 'self-insert-command)))))
+               (lambda ()
+                 ;; Go straight home
+                 (define-key ido-file-completion-map
+                   (kbd "~")
+                   (lambda ()
+                     (interactive)
+                     (cond
+                      ((looking-back "~/") (insert "projects/"))
+                      ((looking-back "/") (insert "~/"))
+                      (:else (call-interactively 'self-insert-command)))))
 
-        ;; Use C-w to go back up a dir to better match normal usage of C-w
-        ;; - insert current file name with C-x C-w instead.
-        (define-key ido-file-completion-map (kbd "C-w") 'ido-delete-backward-updir)
-        (define-key ido-file-completion-map (kbd "C-x C-w") 'ido-copy-current-file-name)))
+                 ;; Use C-w to go back up a dir to better match normal usage of C-w
+                 ;; - insert current file name with C-x C-w instead.
+                 (define-key ido-file-completion-map (kbd "C-w") 'ido-delete-backward-updir)
+                 (define-key ido-file-completion-map (kbd "C-x C-w") 'ido-copy-current-file-name)))
 
      ;; Always rescan buffer for imenu
      (set-default 'imenu-auto-rescan t)
@@ -205,11 +205,10 @@
              (let ((ido-ubiquitous-enable-compatibility nil))
                ad-do-it))))
 
-          ;;; save this bit for later.
+               ;;; save this bit for later.
      ;;(ido-ubiquitous-use-new-completing-read webjump 'webjump)
      ;;(ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
      ;;(ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)
-
 
    #+END_SRC
 ** Yasnippet
