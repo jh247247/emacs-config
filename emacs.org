@@ -10,12 +10,12 @@
                          smex ido-ubiquitous flx-ido
                          auto-yasnippet yasnippet auto-complete ac-math ac-dabbrev ; autocomplete
                          smartparens rainbow-delimiters ; paren complete
-                         ; org mode
+                                            ; org mode
                          plantuml-mode org-ac org-screenshot smart-mode-line
-                         ; ws stuff
+                                            ; ws stuff
                          ws-butler shrink-whitespace auto-capitalize
                          hungry-delete
-                         ; selection
+                                            ; selection
                          expand-region rect-mark
                          epa
                          multiple-cursors
@@ -23,6 +23,7 @@
                          projectile org-projectile
                          groovy-mode
                          deft
+                         java-imports java-snippets
                          workgroups2))
 
     ;; add extra sources to the package archives
@@ -788,9 +789,11 @@ With prefix P, create local abbrev. Otherwise it will be global."
    hopefully make my life easier.
    #+begin_src emacs-lisp
 
-
+     ; add imports when needed
      (add-hook 'java-mode-hook (lambda ()
-                                 (cedet-android-sdk-update-classpath)))
+                                 ((define-key java-mode-map (kbd "M-I")'java-imports-add-import-dwim))
+                                 (hungry-delete-mode)))
+
    #+end_src
 ** Deft
    Deft allows for quick note taking, for writing down thoughts. Since
