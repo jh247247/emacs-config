@@ -1,49 +1,50 @@
 
 * Automatic package installation
   #+begin_src emacs-lisp
-    (require 'package)
+        (require 'package)
 
-    (package-initialize)
+        (package-initialize)
 
-    (setq package-list '(grandshell-theme ; theme
-                         magit ; git
-                         smex ido-ubiquitous flx-ido
-                         auto-yasnippet yasnippet auto-complete ac-math ac-dabbrev ; autocomplete
-                         smartparens rainbow-delimiters ; paren complete
-                                            ; org mode
-                         plantuml-mode org-ac org-screenshot smart-mode-line
-                                            ; ws stuff
-                         ws-butler shrink-whitespace auto-capitalize
-                         hungry-delete
-                                            ; selection
-                         expand-region rect-mark
-                         epa
-                         multiple-cursors
-                         flycheck flycheck-pos-tip
-                         projectile org-projectile
-                         groovy-mode
-                         deft
-                         java-imports java-snippets
-                         workgroups2))
+        (setq package-list '(grandshell-theme ; theme
+                             magit ; git
+                             smex ido-ubiquitous flx-ido
+                             auto-yasnippet yasnippet auto-complete ac-math ac-dabbrev ; autocomplete
+                             smartparens rainbow-delimiters ; paren complete
+                                                ; org mode
+                             plantuml-mode org-ac org-screenshot smart-mode-line
+                                                ; ws stuff
+                             ws-butler shrink-whitespace auto-capitalize
+                             hungry-delete
+                                                ; selection
+                             expand-region rect-mark
+                             epa
+                             multiple-cursors
+                             flycheck flycheck-pos-tip
+                             projectile org-projectile
+                             groovy-mode
+                             deft
+                             java-imports java-snippets
+                             workgroups2
+                             ace-isearch))
 
-    ;; add extra sources to the package archives
-    (setq package-archives
-          '(("gnu" . "http://elpa.gnu.org/packages/")
-            ("melpa" . "http://melpa.milkbox.net/packages/")
-            ("marmalade" . "http://marmalade-repo.org/packages/")))
-                                            ; fetch the list of packages available
-    (unless package-archive-contents
-      (package-refresh-contents))
+        ;; add extra sources to the package archives
+        (setq package-archives
+              '(("gnu" . "http://elpa.gnu.org/packages/")
+                ("melpa" . "http://melpa.milkbox.net/packages/")
+                ("marmalade" . "http://marmalade-repo.org/packages/")))
+                                                ; fetch the list of packages available
+        (unless package-archive-contents
+          (package-refresh-contents))
 
 
-                                            ; install the missing packages
-    (defun install-packages (pl)
-      (dolist (package pl)
-        (unless (package-installed-p package)
-          (package-install package))))
+                                                ; install the missing packages
+        (defun install-packages (pl)
+          (dolist (package pl)
+            (unless (package-installed-p package)
+              (package-install package))))
 
-    (package-initialize)
-    (install-packages package-list)
+        (package-initialize)
+        (install-packages package-list)
   #+end_src
 
 * Appearance
@@ -632,30 +633,35 @@ With prefix P, create local abbrev. Otherwise it will be global."
 
            (require 'semantic)
            (require 'semantic/bovine/gcc)
-           (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
-           (add-to-list 'semantic-default-submodes
-                        'global-semantic-idle-local-symbol-highlight-mode)
-           (add-to-list 'semantic-default-submodes
-                        'global-semantic-idle-scheduler-mode)
-           (add-to-list 'semantic-default-submodes
-                        'global-semantic-idle-summary-mode)
+           (require 'semantic/db-javap)
+           (require 'cedet-android)
+           (require 'semantic/sb)
+           (require 'semantic/db-javap)
+           (require 'semantic/ia)
+
+           ;; Add further minor-modes to be enabled by semantic-mode.
+           ;; See doc-string of `semantic-default-submodes' for other things
+           ;; you can use here.
+           (add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
+           (add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
+           (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
+           (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode t)
+           (add-to-list 'semantic-default-submodes 'global-semantic-idle-local-symbol-highlight-mode t)
+           (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode t)
+
+           ;; Enable Semantic
+           (semantic-mode 1)
+           (semantic-load-enable-gaudy-code-helpers)
+           (semantic-load-enable-excessive-code-helpers)
+
+           ;; Enable EDE (Project Management) features
+           (global-ede-mode 1)
 
 
-           ;; Semantic
-           (global-semantic-idle-scheduler-mode)
-           (global-semantic-idle-completions-mode)
-           (global-semantic-decoration-mode)
-           (global-semantic-highlight-func-mode)
-           ;;(global-semantic-show-unmatched-syntax-mode)
            (setq semantic-load-turn-useful-things-on t)
            (setq global-semantic-idle-local-symbol-highlight-mode t)
+           )
 
-           (semantic-mode 1)
-           (global-ede-mode t)
-           (ede-enable-generic-projects)
-
-           (require 'semantic/db-javap)
-           (require 'cedet-android))
        (lambda ()
          (message "Remember to install CEDET!")
          ))
@@ -760,11 +766,12 @@ With prefix P, create local abbrev. Otherwise it will be global."
    hopefully make my life easier.
    #+begin_src emacs-lisp
 
-     ; add imports when needed
+                                             ; add imports when needed
      (add-hook 'java-mode-hook (lambda ()
-                                 ((define-key java-mode-map (kbd "M-I")'java-imports-add-import-dwim))
-                                 (hungry-delete-mode)))
-
+                                 (define-key java-mode-map (kbd "M-I") 'java-imports-add-import-dwim)
+                                 (hungry-delete-mode)
+                                 (setq c-hungry-delete-key t)))
+     (setq java-imports-find-block-function 'java-imports-find-place-sorted-block)
    #+end_src
 ** Deft
    Deft allows for quick note taking, for writing down thoughts. Since
@@ -826,6 +833,11 @@ With prefix P, create local abbrev. Otherwise it will be global."
   (setq wg-prefix-key (kbd "C-c C-c"))
   (workgroups-mode 1)
 #+end_src
+** Ace-isearch
+#+begin_src emacs-lisp
+(global-ace-isearch-mode +1)
+#+end_src
+
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
   android+ssh does some funny stuff I have to compensate.
