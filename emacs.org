@@ -837,6 +837,13 @@ With prefix P, create local abbrev. Otherwise it will be global."
 #+begin_src emacs-lisp
 (global-ace-isearch-mode +1)
 #+end_src
+** Verilog
+   Verilog mode in emacs has some funky auto insert stuff that drives
+   me up the wall, wondering where my cursor went. Get rid of this.
+   #+begin_src emacs-lisp
+     (setq verilog-auto-newline nil)
+     (setq verilog-mode-abbrev-table nil)
+   #+end_src
 
 * Android workarounds
   I like to keep my stuff consistent across every system. Since
