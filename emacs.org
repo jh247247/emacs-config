@@ -104,5 +104,13 @@
        (add-hook 'prog-mode-hook 'indent-guide-mode)
        (setq indent-guide-recursive t))
    #+end_src
-
-
+** Parentheses matching
+   #+begin_src emacs-lisp
+     (use-package smartparens-config
+       :ensure smartparens
+       :init
+       (smartparens-global-strict-mode)
+       :config
+       (setq sp-autoescape-string-quote-if-empty t))
+       
+   #+end_src
