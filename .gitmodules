@@ -1,3 +1,6 @@
 [submodule "cedet"]
 	path = cedet
 	url = http://git.code.sf.net/p/cedet/git
+[submodule "yasnippet-snippets"]
+	path = yasnippet-snippets
+	url = https://github.com/AndreaCrotti/yasnippet-snippets.git
