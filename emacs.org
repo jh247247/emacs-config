@@ -13,6 +13,7 @@
     ;; assumes that load path is always at default...
     (add-to-list 'load-path "~/.emacs.d/use-package")
     (require 'use-package)
+    (setq use-package-always-ensure t)
   #+end_src
 
 * Appearance
@@ -31,7 +32,21 @@
    The theme that I use, nice for high contrast stuff.
    #+begin_src emacs-lisp
      (use-package grandshell
+                  :ensure grandshell-theme
                   :init
                   (load-theme 'grandshell t))
+
+   #+end_src
+
+* Extensions
+
+** Magit
+   #+begin_src emacs-lisp
+     (use-package magit
+       :commands magit-status
+       :init
+       (setq magit-last-seen-setup-instructions "1.4.0")
+       :bind
+       ("<f7>" . magit-status))
 
    #+end_src
