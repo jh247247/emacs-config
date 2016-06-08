@@ -50,3 +50,12 @@
        ("<f7>" . magit-status))
 
    #+end_src
+
+** ivy
+   #+begin_src emacs-lisp
+     (use-package ivy
+       :init
+       (ivy-mode 1)
+       :config
+       (setq magit-completing-read-function 'ivy-completing-read))
+   #+end_src
