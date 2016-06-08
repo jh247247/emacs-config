@@ -39,7 +39,6 @@
    #+end_src
 
 * Extensions
-
 ** Magit
    #+begin_src emacs-lisp
      (use-package magit
@@ -98,3 +97,12 @@
        (setq yas-snippet-dirs (append yas-snippet-dirs
                                       '("~/.emacs.d/snippets" "~/.emacs.d/yasnippets-snippets"))))
    #+end_src
+** Visual indentation guides
+   #+begin_src emacs-lisp
+     (use-package indent-guide
+       :config
+       (add-hook 'prog-mode-hook 'indent-guide-mode)
+       (setq indent-guide-recursive t))
+   #+end_src
+
+
