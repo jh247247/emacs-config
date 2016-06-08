@@ -80,4 +80,21 @@
        :config
        (setq projectile-completion-system 'ivy))
    #+end_src
+** company-mode
+   auto completion stuff.
+   #+begin_src emacs-lisp
+     (use-package company
+       :init
+       (global-company-mode))
+   #+end_src
+
 ** yasnippet
+   snippet expansion.
+   #+begin_src emacs-lisp
+     (use-package yasnippet
+       :config
+       (yas-global-mode 1)
+       (yas-reload-all)
+       (setq yas-snippet-dirs (append yas-snippet-dirs
+                                      '("~/.emacs.d/snippets" "~/.emacs.d/yasnippets-snippets"))))
+   #+end_src
