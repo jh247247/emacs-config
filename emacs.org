@@ -52,6 +52,7 @@
    #+end_src
 
 ** ivy
+   Replacement for ido/smex etc.
    #+begin_src emacs-lisp
      (use-package ivy
        :init
@@ -69,3 +70,14 @@
              ("[tab]" . ivy-alt-done)))
 
    #+end_src
+
+** Projectile
+   Project management stuff.
+   #+begin_src emacs-lisp
+     (use-package projectile
+       :init
+       (projectile-global-mode)
+       :config
+       (setq projectile-completion-system 'ivy))
+   #+end_src
+** yasnippet
