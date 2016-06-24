@@ -52,6 +52,8 @@
 ** ivy
    Replacement for ido/smex etc.
    #+begin_src emacs-lisp
+     (use-package counsel)
+     (use-package flx)
      (use-package ivy
        :init
        (ivy-mode 1)
@@ -59,11 +61,12 @@
        (setq ivy-height 10)
        (setq ivy-count-format "(%d/%d)")
        (setq ivy-re-builders-alist
-             '((read-file-name-internal . ivy--regex-fuzzy)
-               (t . ivy--regex-plus)))
+             '((t . ivy--regex-fuzzy)))
+       (setq ivy-initial-inputs-alist nil)
        :config
        (setq magit-completing-read-function 'ivy-completing-read)
        (global-set-key (kbd "C-x C-f") 'ivy-switch-buffer)
+       (global-set-key (kbd "M-x") 'counsel-M-x)
        :bind
        (:map ivy-minibuffer-map
              ("[tab]" . ivy-alt-done)
@@ -124,7 +127,8 @@
      ;; todo: sexp?
      (defun hungry-if-whitespace-backward ()
        (interactive)
-       (if (string-match-p "[[:blank:]]" (string (preceding-char)))
+       (if (or (string-match-p "[[:blank:]]" (string (preceding-char)))
+               (eq (current-column) 0))
            (hungry-delete-backward -1)
          (sp-backward-delete-char)))
 
