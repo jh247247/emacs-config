@@ -74,14 +74,12 @@
 
    #+end_src
 
-** Projectile
+** Fiplr
    Project management stuff.
    #+begin_src emacs-lisp
-     (use-package projectile
-       :init
-       (projectile-global-mode)
-       :config
-       (setq projectile-completion-system 'ivy))
+     (use-package fiplr
+       :bind
+       ("C-x f" . fiplr-find-file))
    #+end_src
 ** company-mode
    auto completion stuff.
