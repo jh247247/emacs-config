@@ -49,10 +49,19 @@
        ("<f7>" . magit-status))
 
    #+end_src
+** counsel
+   #+begin_src emacs-lisp
+     (use-package counsel
+       :init
+       :config
+       :bind
+       ("M-s" . counsel-git-grep)
+       ("C-x f" . counsel-git))
+
+   #+end_src
 ** ivy
    Replacement for ido/smex etc.
    #+begin_src emacs-lisp
-     (use-package counsel)
      (use-package flx)
      (use-package ivy
        :init
@@ -65,7 +74,7 @@
        (setq ivy-initial-inputs-alist nil)
        :config
        (setq magit-completing-read-function 'ivy-completing-read)
-       (global-set-key (kbd "C-x C-f") 'ivy-switch-buffer)
+       (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
        (global-set-key (kbd "M-x") 'counsel-M-x)
        :bind
        (:map ivy-minibuffer-map
@@ -74,13 +83,6 @@
 
    #+end_src
 
-** Fiplr
-   Project management stuff.
-   #+begin_src emacs-lisp
-     (use-package fiplr
-       :bind
-       ("C-x f" . fiplr-find-file))
-   #+end_src
 ** company-mode
    auto completion stuff.
    #+begin_src emacs-lisp
@@ -137,6 +139,22 @@
            (hungry-delete-forward -1)
          (sp-delete-char)))
 
+     (defun just-one-space-in-region (beg end)
+       "replace all whitespace in the region with single spaces"
+       (interactive "r")
+       (save-excursion
+         (save-restriction
+           (narrow-to-region beg end)
+           (goto-char (point-min))
+           (while (re-search-forward "\\s-+" nil t)
+             (replace-match " ")))))
+
+     (defun just-one-space-if-region ()
+       (interactive)
+       (if (use-region-p)
+           (call-interactively 'just-one-space-in-region)
+         (call-interactively 'just-one-space)))
+
 
      (string-match-p "[[:blank:]]" "   ")
 
@@ -145,7 +163,10 @@
        (global-hungry-delete-mode)
        :bind
        ("<backspace>" . hungry-if-whitespace-backward)
-       ("<deletechar>" . hungry-if-whitespace-forward))
+       ("<deletechar>" . hungry-if-whitespace-forward)
+       ("M-SPC" . just-one-space-if-region))
+
+
    #+end_src
 ** Whitespace butler
    Delete whitespace when I save
@@ -154,3 +175,12 @@
        :init
        (ws-butler-global-mode))
    #+end_src
+
+** Aggressive-indent
+   Aggressively indent code and text
+   #+begin_src emacs-lisp
+     (use-package aggressive-indent
+       :init
+       (aggressive-indent-global-mode))
+   #+end_src
+
