@@ -1,4 +1,3 @@
-
 * Automatic package installation
   #+begin_src emacs-lisp
     (require 'package)
@@ -86,11 +85,84 @@
 ** company-mode
    auto completion stuff.
    #+begin_src emacs-lisp
+
+     (defun check-expansion ()
+       (save-excursion
+         (if (looking-at "\\_>") t
+           (backward-char 1)
+           (if (looking-at "\\.") t
+             (backward-char 1)
+             (if (looking-at "->") t nil)))))
+
+     ;; try and expand, otherwise return null
+     (defun do-yas-expand ()
+       (let ((yas/fallback-behavior 'return-nil))
+         (yas/expand)))
+
+     (defun tab-indent-or-complete ()
+       (interactive)
+       (cond
+        ((minibufferp)
+         (minibuffer-complete))
+        (t
+         (indent-for-tab-command)
+         (if (or (not yas/minor-mode)
+                 (null (do-yas-expand)))
+             (if (check-expansion)
+                 (progn
+                   (company-manual-begin)
+                   (if (null company-candidates)
+                       (progn
+                         (company-abort)
+                         (indent-for-tab-command)))))))))
+
+     (defun tab-complete-or-next-field ()
+       (interactive)
+       (if (or (not yas/minor-mode)
+               (null (do-yas-expand)))
+           (if company-candidates
+               (company-complete-selection)
+             (if (check-expansion)
+                 (progn
+                   (company-manual-begin)
+                   (if (null company-candidates)
+                       (progn
+                         (company-abort)
+                         (yas-next-field))))
+               (yas-next-field)))))
+
+     (defun expand-snippet-or-complete-selection ()
+       (interactive)
+       (if (or (not yas/minor-mode)
+               (null (do-yas-expand))
+               (company-abort))
+           (company-complete-selection)))
+
+     (defun abort-company-or-yas ()
+       (interactive)
+       (if (null company-candidates)
+           (yas-abort-snippet)
+         (company-abort)))
+
      (use-package company
        :init
        (global-company-mode)
        :config
-       (setq company-minimum-prefix-length 2))
+       (setq company-minimum-prefix-length 1
+             company-idle-delay 0)
+       :bind
+       (:map company-active-map
+             ("<tab>" . expand-snippet-or-complete-selection)))
+
+
+     ;; documentation popup
+     (use-package company-quickhelp
+       :config
+       (company-quickhelp-mode 1)
+       :bind
+       (:map company-active-map
+             ("M-h" . company-quickhelp-manual-begin)))
+
    #+end_src
 
 ** yasnippet
@@ -103,6 +175,19 @@
        (setq yas-snippet-dirs (append yas-snippet-dirs
                                       '("~/.emacs.d/snippets" "~/.emacs.d/yasnippets-snippets"))))
    #+end_src
+
+** yankpad
+   Extension for snippet expansion
+   TODO
+   #+begin_src emacs-lisp
+     (use-package yankpad
+       :ensure t
+       :defer 10
+       :init
+       (setq yankpad-file "~/.emacs.d/yankpad.org"))
+
+   #+end_src
+
 ** Visual indentation guides
    #+begin_src emacs-lisp
      (use-package indent-guide
@@ -172,6 +257,7 @@
    Delete whitespace when I save
    #+begin_src emacs-lisp
      (use-package ws-butler
+       :defer t
        :init
        (ws-butler-global-mode))
    #+end_src
@@ -184,3 +270,58 @@
        (aggressive-indent-global-mode))
    #+end_src
 
+** Swoop
+   #+begin_src emacs-lisp
+     (use-package swoop
+       :bind
+       ("C-o" . swoop)
+       ("C-M-o" . swoop-multi)
+       ("M-o" . swoop-pcre-regexp))
+   #+end_src
+
+** c/c++ editing
+*** irony
+    C/C++ completion using libclang.
+#+begin_src emacs-lisp
+  (use-package company-irony
+    :config
+    (eval-after-load 'company
+      '(add-to-list 'company-backends 'company-irony)))
+#+end_src
+
+
+** Custom
+
+*** Compilation
+    #+begin_src emacs-lisp
+      (setq compilation-last-buffer nil)
+      (defun compile-again (pfx)
+        (interactive "p")
+        (if (and (eq pfx 1)
+                 compilation-last-buffer)
+            (progn
+              (set-buffer compilation-last-buffer)
+              (revert-buffer t t))
+          (call-interactively 'compile)))
+
+
+      ;; some compilation stuff so that it scrolls to the first error when
+      ;; it happens
+      (setq compilation-scroll-output 'first-error)
+
+      (global-set-key [(f5)] 'compile-again)
+      (global-set-key [(f6)] 'next-error)
+
+      ;; require winner mode for the auto closing of the compilation buffer.
+      (winner-mode 1)
+
+      (setq compilation-finish-functions 'compile-autoclose)
+      ;; Close the compilation window if there was no error at all.
+      (defun compile-autoclose (buffer string)
+        (cond ((string-match "finished" string)
+               (bury-buffer "*compilation*")
+               (winner-undo)
+               (message "Build successful."))
+              (t
+               (message "Compilation exited abnormally: %s" string))))
+    #+end_src
