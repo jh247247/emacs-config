@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# contributor: Jack Hosemans
+# name: if conditional
+# key: if
+# --
+if($1) begin
+
+end

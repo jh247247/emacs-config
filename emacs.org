@@ -1,14 +1,15 @@
 * Automatic package installation
   #+begin_src emacs-lisp
     (require 'package)
-    (package-initialize)
+
 
     ;; add extra sources to the package archives
     (setq package-archives
           '(("gnu" . "http://elpa.gnu.org/packages/")
-            ("melpa" . "http://melpa.milkbox.net/packages/")
+            ("melpa" . "https://melpa.org/packages/")
             ("marmalade" . "http://marmalade-repo.org/packages/")))
 
+    (package-initialize)
     ;; assumes that load path is always at default...
     (add-to-list 'load-path "~/.emacs.d/use-package")
     (require 'use-package)
@@ -267,7 +268,8 @@
    #+begin_src emacs-lisp
      (use-package aggressive-indent
        :init
-       (aggressive-indent-global-mode))
+       (aggressive-indent-global-mode)
+       (add-to-list 'aggressive-indent-excluded-modes 'verilog-mode))
    #+end_src
 
 ** Swoop
@@ -279,19 +281,7 @@
        ("M-o" . swoop-pcre-regexp))
    #+end_src
 
-** c/c++ editing
-*** irony
-    C/C++ completion using libclang.
-#+begin_src emacs-lisp
-  (use-package company-irony
-    :config
-    (eval-after-load 'company
-      '(add-to-list 'company-backends 'company-irony)))
-#+end_src
-
-
 ** Custom
-
 *** Compilation
     #+begin_src emacs-lisp
       (setq compilation-last-buffer nil)
@@ -324,4 +314,33 @@
                (message "Build successful."))
               (t
                (message "Compilation exited abnormally: %s" string))))
+    #+end_src
+
+** flycheck
+   #+begin_src emacs-lisp
+     (use-package flycheck
+       :ensure t
+       :init
+       (global-flycheck-mode))
+   #+end_src
+
+* Mode specific
+** c/c++ editing
+*** irony
+    C/C++ completion using libclang.
+#+begin_src emacs-lisp
+  (use-package company-irony
+    :config
+    (eval-after-load 'company
+      '(add-to-list 'company-backends 'company-irony)))
+#+end_src
+
+** verilog
+*** Compiliation
+    Follow compilation output
+    #+begin_src emacs-lisp
+      (add-hook 'verilog-mode-hook (lambda ()
+                                     (make-local-variable 'compilation-scroll-output)
+                                     (setq compilation-scroll-output t)
+                                     ))
     #+end_src

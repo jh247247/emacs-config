@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# contributor: Jack Hosemans
+# name: always block
+# key: alwaysp
+# --
+always @(posedge $1) begin
+
+end
