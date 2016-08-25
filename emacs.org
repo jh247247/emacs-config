@@ -2,7 +2,6 @@
   #+begin_src emacs-lisp
     (require 'package)
 
-
     ;; add extra sources to the package archives
     (setq package-archives
           '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -10,6 +9,13 @@
             ("marmalade" . "http://marmalade-repo.org/packages/")))
 
     (package-initialize)
+    (unless (package-installed-p 'use-package)
+      (package-refresh-contents)
+      (package-install 'use-package))
+
+    (require 'use-package)
+    (setq use-package-always-ensure t)
+
     ;; assumes that load path is always at default...
     (add-to-list 'load-path "~/.emacs.d/use-package")
     (require 'use-package)
@@ -344,3 +350,10 @@
                                      (setq compilation-scroll-output t)
                                      ))
     #+end_src
+** python
+#+begin_src emacs-lisp
+  (use-package company-anaconda
+    :config
+    (eval-after-load 'company
+      '(add-to-list 'company-backends 'company-anaconda)))
+#+end_src

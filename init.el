@@ -42,6 +42,9 @@
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(indent-tabs-mode nil)
  '(magit-diff-options nil)
+ '(package-selected-packages
+   (quote
+    (company-irony swoop aggressive-indent indent-guide yankpad company-quickhelp company counsel use-package ws-butler workgroups2 smex smartparens smart-mode-line shrink-whitespace rect-mark rainbow-delimiters plantuml-mode org-screenshot org-projectile org-ac multiple-cursors magit java-snippets java-imports ido-ubiquitous hungry-delete groovy-mode grandshell-theme flycheck-pos-tip flx-ido expand-region dockerfile-mode docker-tramp docker diminish deft bind-key auto-yasnippet auto-capitalize ac-math ac-dabbrev)))
  '(persp-auto-save-opt 0))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
