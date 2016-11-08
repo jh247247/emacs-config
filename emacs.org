@@ -11,7 +11,7 @@
                              auto-yasnippet yasnippet auto-complete ac-math ac-dabbrev ; autocomplete
                              smartparens rainbow-delimiters ; paren complete
                                                 ; org mode
-                             plantuml-mode org-ac org-screenshot smart-mode-line
+                             plantuml-mode org-ac smart-mode-line
                                                 ; ws stuff
                              ws-butler shrink-whitespace auto-capitalize
                              hungry-delete
@@ -350,16 +350,6 @@
       (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
       )
       (add-hook 'org-mode-hook 'org-mode-reftex-setup)
-    #+end_src
-
-*** Screenshot
-    #+begin_src emacs-lisp
-
-      (require 'org-screenshot)
-      (add-hook 'org-mode-hook
-                (lambda ()
-                  (local-set-key (kbd "M-s M-s") 'org-screenshot)))
-
     #+end_src
 
 ** Indenting
